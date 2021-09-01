@@ -52,12 +52,18 @@ func run(cfg *config.Config, logger *zap.Logger) error {
 	}
 	defer ln.Close()
 
+	lnControl, err := net.Listen("tcp", cfg.ControlAddress)
+	if err != nil {
+		return fmt.Errorf("error create main listener, %w", err)
+	}
+	defer ln.Close()
+
 	ctx, cancel := context.WithCancel(context.Background())
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 
 	app := application.New(logger, cfg)
-	go app.Run(cancel, wg, ln)
+	go app.Run(cancel, wg, ln, lnControl)
 
 	signals := make(chan os.Signal, 1)
 	signal.Notify(signals, syscall.SIGTERM)
