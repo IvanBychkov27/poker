@@ -33,9 +33,17 @@ func (p *Poker) combinatorika(k, n uint64) uint64 {
 }
 
 // --- расчет факториала ---
-func (p *Poker) factorial(x uint64) uint64 {
+func (p *Poker) factorial1(x uint64) uint64 {
 	if x == 0 {
 		return 1
 	}
 	return x * p.factorial(x-1)
+}
+
+func (p *Poker) factorial(n uint64) uint64 { // наивный алгоритм
+	res := uint64(1)
+	for i := uint64(2); i < n+1; i++ {
+		res *= i
+	}
+	return res
 }
