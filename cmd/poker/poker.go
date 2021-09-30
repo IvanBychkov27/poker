@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/IvanBychkov27/poker/internal/application"
 	"github.com/IvanBychkov27/poker/internal/config"
+	"github.com/IvanBychkov27/poker/internal/poker"
 	"go.uber.org/zap"
 	"log"
 	"net"
@@ -62,7 +63,8 @@ func run(cfg *config.Config, logger *zap.Logger) error {
 	wg := &sync.WaitGroup{}
 	wg.Add(1)
 
-	app := application.New(logger, cfg)
+	p := poker.NewPoker(logger)
+	app := application.New(logger, cfg, p)
 	go app.Run(cancel, wg, ln, lnControl)
 
 	signals := make(chan os.Signal, 1)

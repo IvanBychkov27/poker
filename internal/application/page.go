@@ -1,0 +1,211 @@
+package application
+
+const (
+	pageTop = `<!DOCTYPE HTML><html><head>
+<style>.error{color:#FF0000;}</style></head><title>Poker combinations</title>
+<body><h2>Покерная вероятность победы</h2>
+<p>Введите <B>две Ваши</B> карты:</p>
+<p>&emsp; &emsp; &nbsp; 2 &ensp; 3 &ensp; 4 &ensp; 5 &ensp; 6 &ensp; 7 &ensp; 8&ensp; 9&ensp; 10&ensp; V&ensp; D &ensp; K &ensp; T</p>`
+	form = `<form action="/" method="POST">
+ <p>Пик&nbsp;
+   <input type="checkbox" name="hand2p"/>
+   <input type="checkbox" name="hand3p"/>
+   <input type="checkbox" name="hand4p"/>
+   <input type="checkbox" name="hand5p"/>
+   <input type="checkbox" name="hand6p"/>
+   <input type="checkbox" name="hand7p"/>
+   <input type="checkbox" name="hand8p"/>
+   <input type="checkbox" name="hand9p"/>
+   <input type="checkbox" name="hand10p"/>
+   <input type="checkbox" name="hand11p"/>
+   <input type="checkbox" name="hand12p"/>
+   <input type="checkbox" name="hand13p"/>
+   <input type="checkbox" name="hand14p"/>
+</p>
+<p>Крес
+   <input type="checkbox" name="hand2k"/>
+   <input type="checkbox" name="hand3k"/>
+   <input type="checkbox" name="hand4k"/>
+   <input type="checkbox" name="hand5k"/>
+   <input type="checkbox" name="hand6k"/>
+   <input type="checkbox" name="hand7k"/>
+   <input type="checkbox" name="hand8k"/>
+   <input type="checkbox" name="hand9k"/>
+   <input type="checkbox" name="hand10k"/>
+   <input type="checkbox" name="hand11k"/>
+   <input type="checkbox" name="hand12k"/>
+   <input type="checkbox" name="hand13k"/>
+   <input type="checkbox" name="hand14k"/>
+</p>
+<p>Буби
+   <input type="checkbox" name="hand2b"/>
+   <input type="checkbox" name="hand3b"/>
+   <input type="checkbox" name="hand4b"/>
+   <input type="checkbox" name="hand5b"/>
+   <input type="checkbox" name="hand6b"/>
+   <input type="checkbox" name="hand7b"/>
+   <input type="checkbox" name="hand8b"/>
+   <input type="checkbox" name="hand9b"/>
+   <input type="checkbox" name="hand10b"/>
+   <input type="checkbox" name="hand11b"/>
+   <input type="checkbox" name="hand12b"/>
+   <input type="checkbox" name="hand13b"/>
+   <input type="checkbox" name="hand14b"/>
+</p>
+<p>Черв
+   <input type="checkbox" name="hand2ch"/>
+   <input type="checkbox" name="hand3ch"/>
+   <input type="checkbox" name="hand4ch"/>
+   <input type="checkbox" name="hand5ch"/>
+   <input type="checkbox" name="hand6ch"/>
+   <input type="checkbox" name="hand7ch"/>
+   <input type="checkbox" name="hand8ch"/>
+   <input type="checkbox" name="hand9ch"/>
+   <input type="checkbox" name="hand10ch"/>
+   <input type="checkbox" name="hand11ch"/>
+   <input type="checkbox" name="hand12ch"/>
+   <input type="checkbox" name="hand13ch"/>
+   <input type="checkbox" name="hand14ch"/>
+</p>
+<br><br>
+<p>Введите <B>карты на столе</B>:</p>
+<p>&emsp; &emsp; &nbsp; 2 &ensp; 3 &ensp; 4 &ensp; 5 &ensp; 6 &ensp; 7 &ensp; 8&ensp; 9&ensp; 10&ensp; V&ensp; D &ensp; K &ensp; T</p>
+<p>Пик&nbsp;
+   <input type="checkbox" name="table2p"/>
+   <input type="checkbox" name="table3p"/>
+   <input type="checkbox" name="table4p"/>
+   <input type="checkbox" name="table5p"/>
+   <input type="checkbox" name="table6p"/>
+   <input type="checkbox" name="table7p"/>
+   <input type="checkbox" name="table8p"/>
+   <input type="checkbox" name="table9p"/>
+   <input type="checkbox" name="table10p"/>
+   <input type="checkbox" name="table11p"/>
+   <input type="checkbox" name="table12p"/>
+   <input type="checkbox" name="table13p"/>
+   <input type="checkbox" name="table14p"/>
+</p>
+<p>Крес
+   <input type="checkbox" name="table2k"/>
+   <input type="checkbox" name="table3k"/>
+   <input type="checkbox" name="table4k"/>
+   <input type="checkbox" name="table5k"/>
+   <input type="checkbox" name="table6k"/>
+   <input type="checkbox" name="table7k"/>
+   <input type="checkbox" name="table8k"/>
+   <input type="checkbox" name="table9k"/>
+   <input type="checkbox" name="table10k"/>
+   <input type="checkbox" name="table11k"/>
+   <input type="checkbox" name="table12k"/>
+   <input type="checkbox" name="table13k"/>
+   <input type="checkbox" name="table14k"/>
+</p>
+<p>Буби
+   <input type="checkbox" name="table2b"/>
+   <input type="checkbox" name="table3b"/>
+   <input type="checkbox" name="table4b"/>
+   <input type="checkbox" name="table5b"/>
+   <input type="checkbox" name="table6b"/>
+   <input type="checkbox" name="table7b"/>
+   <input type="checkbox" name="table8b"/>
+   <input type="checkbox" name="table9b"/>
+   <input type="checkbox" name="table10b"/>
+   <input type="checkbox" name="table11b"/>
+   <input type="checkbox" name="table12b"/>
+   <input type="checkbox" name="table13b"/>
+   <input type="checkbox" name="table14b"/>
+</p>
+<p>Черв
+   <input type="checkbox" name="table2ch"/>
+   <input type="checkbox" name="table3ch"/>
+   <input type="checkbox" name="table4ch"/>
+   <input type="checkbox" name="table5ch"/>
+   <input type="checkbox" name="table6ch"/>
+   <input type="checkbox" name="table7ch"/>
+   <input type="checkbox" name="table8ch"/>
+   <input type="checkbox" name="table9ch"/>
+   <input type="checkbox" name="table10ch"/>
+   <input type="checkbox" name="table11ch"/>
+   <input type="checkbox" name="table12ch"/>
+   <input type="checkbox" name="table13ch"/>
+   <input type="checkbox" name="table14ch"/>
+</p>
+<br><br>
+<p>Введите <B>вышедшие</B> карты:</p>
+<p>&emsp; &emsp; &nbsp; 2 &ensp; 3 &ensp; 4 &ensp; 5 &ensp; 6 &ensp; 7 &ensp; 8&ensp; 9&ensp; 10&ensp; V&ensp; D &ensp; K &ensp; T</p>
+<p>Пик&nbsp;
+   <input type="checkbox" name="out2p"/>
+   <input type="checkbox" name="out3p"/>
+   <input type="checkbox" name="out4p"/>
+   <input type="checkbox" name="out5p"/>
+   <input type="checkbox" name="out6p"/>
+   <input type="checkbox" name="out7p"/>
+   <input type="checkbox" name="out8p"/>
+   <input type="checkbox" name="out9p"/>
+   <input type="checkbox" name="out10p"/>
+   <input type="checkbox" name="out11p"/>
+   <input type="checkbox" name="out12p"/>
+   <input type="checkbox" name="out13p"/>
+   <input type="checkbox" name="out14p"/>
+</p>
+<p>Крес
+   <input type="checkbox" name="out2k"/>
+   <input type="checkbox" name="out3k"/>
+   <input type="checkbox" name="out4k"/>
+   <input type="checkbox" name="out5k"/>
+   <input type="checkbox" name="out6k"/>
+   <input type="checkbox" name="out7k"/>
+   <input type="checkbox" name="out8k"/>
+   <input type="checkbox" name="out9k"/>
+   <input type="checkbox" name="out10k"/>
+   <input type="checkbox" name="out11k"/>
+   <input type="checkbox" name="out12k"/>
+   <input type="checkbox" name="out13k"/>
+   <input type="checkbox" name="out14k"/>
+</p>
+<p>Буби
+   <input type="checkbox" name="out2b"/>
+   <input type="checkbox" name="out3b"/>
+   <input type="checkbox" name="out4b"/>
+   <input type="checkbox" name="out5b"/>
+   <input type="checkbox" name="out6b"/>
+   <input type="checkbox" name="out7b"/>
+   <input type="checkbox" name="out8b"/>
+   <input type="checkbox" name="out9b"/>
+   <input type="checkbox" name="out10b"/>
+   <input type="checkbox" name="out11b"/>
+   <input type="checkbox" name="out12b"/>
+   <input type="checkbox" name="out13b"/>
+   <input type="checkbox" name="out14b"/>
+</p>
+<p>Черв
+   <input type="checkbox" name="out2ch"/>
+   <input type="checkbox" name="out3ch"/>
+   <input type="checkbox" name="out4ch"/>
+   <input type="checkbox" name="out5ch"/>
+   <input type="checkbox" name="out6ch"/>
+   <input type="checkbox" name="out7ch"/>
+   <input type="checkbox" name="out8ch"/>
+   <input type="checkbox" name="out9ch"/>
+   <input type="checkbox" name="out10ch"/>
+   <input type="checkbox" name="out11ch"/>
+   <input type="checkbox" name="out12ch"/>
+   <input type="checkbox" name="out13ch"/>
+   <input type="checkbox" name="out14ch"/>
+</p>
+<br>
+<p>Количество соперников:
+   <input type="number" name="nPlayers" value="1" min="1" max="15" size="1" step="1"">
+</p>
+<br>
+<input type="submit" value="Расчитать вероятность">
+<br>
+<br>==============================<br><br>
+</form>`
+	pageBottom = `</body></html>`
+	anError    = `<p class="error">%s</p>`
+
+	constCardsHand  = "hand"
+	constCardsTable = "table"
+	constCardsOut   = "out"
+)

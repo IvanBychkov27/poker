@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"github.com/IvanBychkov27/poker/internal/config"
+	"github.com/IvanBychkov27/poker/internal/poker"
 	"go.uber.org/zap"
 	"net"
 	"net/http"
@@ -15,16 +16,19 @@ type Application struct {
 	serverControl *http.Server
 	logger        *zap.Logger
 	cfg           *config.Config
+	p             *poker.Poker
 }
 
-func New(logger *zap.Logger, cfg *config.Config) *Application {
+func New(logger *zap.Logger, cfg *config.Config, p *poker.Poker) *Application {
 	app := &Application{
 		logger: logger,
 		cfg:    cfg,
+		p:      p,
 	}
 
 	router := http.NewServeMux()
-	router.HandleFunc("/", app.mainpoker)
+	router.HandleFunc("/", app.poker)
+	router.HandleFunc("/pic/", app.handler)
 
 	app.server = &http.Server{}
 	app.server.Handler = router
