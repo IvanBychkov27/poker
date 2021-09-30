@@ -4,6 +4,7 @@ import (
 	"go.uber.org/zap"
 	"net/http"
 	"strconv"
+	"time"
 )
 
 const (
@@ -35,8 +36,14 @@ func (p *Poker) Poker(req *http.Request) string {
 		nPlay = 1
 	}
 
+	timeStart := time.Now()
 	result := p.buildResult(cardHand, cardTable, cardOut, nPlay)
+	timeEnd := time.Now()
 
+	dif := timeEnd.Sub(timeStart)
+	if dif.Milliseconds() > 100 {
+		p.logger.Debug("poker", zap.String("time", dif.String()))
+	}
 	//p.saveResultFileHTML(result)
 	return result
 }
