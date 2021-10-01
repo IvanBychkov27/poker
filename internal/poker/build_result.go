@@ -31,6 +31,7 @@ func (p *Poker) buildResult(cardsHand, cardsTable, outCards []Card, nPlayers int
 // --- Возможные варианты комбинаций у соперников: ---
 func (p *Poker) statCombOpponents(cardTable_5cards, cardHand_2cards, outCards []Card) string {
 	outCards = append(outCards, cardHand_2cards...)
+	outCards = append(outCards, cardTable_5cards...)
 	deckCards := p.deckCards_NoFull(outCards)
 	statComb := p.statAllMaxCombHand_5_cards(deckCards, cardTable_5cards)
 	return p.printStatCombination(statComb)
