@@ -16,7 +16,7 @@ func (p *Poker) sortComb(pComb []Card) []Card { // 2 sec
 	return pComb
 }
 
-func (p *Poker) sortComb2(pComb []Card) []Card { // 7sec
+func (p *Poker) sortComb2(pComb []Card) []Card { // 7 sec
 	sort.SliceStable(pComb, func(i, j int) bool {
 		return pComb[i].value > pComb[j].value // сортировка по убыванию рейтинга
 		//return pComb[i].value < pComb[j].value // сортировка по возрастанию рейтинга

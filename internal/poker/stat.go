@@ -197,7 +197,7 @@ func (p *Poker) statCombination(allComb_5_Cards [][]Card) []int {
 	var rf, sf, k, fh, f, s, c, dp, pr, st int
 	n := len(allComb_5_Cards)
 	for _, comb := range allComb_5_Cards {
-		_, nComb := p.pokerCombination(comb)
+		_, nComb := p.pokerCombination(p.sortComb(comb))
 		switch nComb {
 		case 1: //"Пара":
 			pr++

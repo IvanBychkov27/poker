@@ -24,18 +24,20 @@ func (p *Poker) maxCombOfAllComb5card(allComb [][]Card) []Card {
 
 // --- if comb1 > comb2 - 1;  if comb1 < comb2 - 2 - if comb1 = comb2 - 0 --- комбинации должны содержать 5 карт---!!!
 func (p *Poker) maxCombination(comb1, comb2 []Card) byte {
-	funcMax := byte(0)
+	comb1 = p.sortComb(comb1)
+	comb2 = p.sortComb(comb2)
+
 	_, nComb1 := p.pokerCombination(comb1)
 	_, nComb2 := p.pokerCombination(comb2)
 	if nComb1 > nComb2 {
-		funcMax = 1
+		return byte(1)
 	}
 	if nComb1 < nComb2 {
-		funcMax = 2
+		return byte(2)
 	}
+
+	funcMax := byte(0)
 	if nComb1 == nComb2 {
-		comb1 = p.sortComb(comb1)
-		comb2 = p.sortComb(comb2)
 		for i := 0; i < 5; i++ {
 			if comb1[i].value > comb2[i].value {
 				funcMax = 1

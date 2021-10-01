@@ -1,13 +1,12 @@
 package poker
 
-// --- покерная комбинация из 5 карт ---
+// --- покерная комбинация из 5 карт --- !!! pComb - д.б. отсортированным !!!
 func (p *Poker) pokerCombination(pComb []Card) (string, byte) {
 	strComb := ""
 	byteComb := byte(0)
 	if len(pComb) != 5 {
 		return strComb, byteComb
 	}
-	pComb = p.sortComb(pComb)
 
 	// --- "Флеш" ---
 	if pComb[0].suil == pComb[1].suil && pComb[0].suil == pComb[2].suil {

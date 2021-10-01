@@ -6,9 +6,7 @@ import (
 )
 
 func BenchmarkPoker_sortComb(b *testing.B) {
-	p := &Poker{
-		logger: zap.NewNop(),
-	}
+	p := &Poker{logger: zap.NewNop()}
 
 	comb := p.deckCardsFull()
 

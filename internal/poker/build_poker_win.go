@@ -39,6 +39,7 @@ func (p *Poker) buildPokerWin(cardsHand, cardsTable, outCards []Card, nomberOppo
 		message = message + p.recommendations(statAllMaxCombHand)
 	case 5:
 		yourCombCards = p.maxPokerCombinationOf7Cards(cardsHandAndTable)
+		yourCombCards = p.sortComb(yourCombCards)
 		nameComb, _ = p.pokerCombination(yourCombCards)
 		victory = p.percentVictory(cardsTable, cardsHand, outCards)
 		victory = p.percentWinsDiffNumbersOpponents(victory, nomberOpponents)
