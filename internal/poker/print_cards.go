@@ -7,88 +7,90 @@ import (
 
 // --- Печать инфо о кол-ве комбинаций ---
 func (p *Poker) printStatCombination(statComb []int) string {
+	if len(statComb) != 11 {
+		return ""
+	}
 	res := ""
-	if len(statComb) == 11 {
-		n, rf := statComb[10], statComb[9]
-		sf, k := statComb[8], statComb[7]
-		fh, f := statComb[6], statComb[5]
-		s, c := statComb[4], statComb[3]
-		dp, pr := statComb[2], statComb[1]
-		st := statComb[0]
 
-		res = "Кол-во всех комбинаций = " + strconv.Itoa(n) + " шт.<br>"
-		if rf != 0 {
-			ver := float64(rf) / float64(n)
-			if ver < 0.0001 {
-				res += "РоялФлеш  = " + strconv.Itoa(rf) + " шт. (" + fmt.Sprintf("%2.5f", (float64(rf)*100)/float64(n)) + " %)<br>"
-			} else if ver < 0.01 {
-				res += "РоялФлеш  = " + strconv.Itoa(rf) + " шт. (" + fmt.Sprintf("%2.3f", (float64(rf)*100)/float64(n)) + " %)<br>"
-			} else {
-				res += "РоялФлеш  = " + strconv.Itoa(rf) + " шт. (" + fmt.Sprintf("%2.1f", (float64(rf)*100)/float64(n)) + " %)<br>"
-			}
+	n, rf := statComb[10], statComb[9]
+	sf, k := statComb[8], statComb[7]
+	fh, f := statComb[6], statComb[5]
+	s, c := statComb[4], statComb[3]
+	dp, pr := statComb[2], statComb[1]
+	st := statComb[0]
+
+	res = "Кол-во всех комбинаций = " + strconv.Itoa(n) + " шт.<br>"
+	if rf != 0 {
+		ver := float64(rf) / float64(n)
+		if ver < 0.0001 {
+			res += "РоялФлеш  = " + strconv.Itoa(rf) + " шт. (" + fmt.Sprintf("%2.5f", (float64(rf)*100)/float64(n)) + " %)<br>"
+		} else if ver < 0.01 {
+			res += "РоялФлеш  = " + strconv.Itoa(rf) + " шт. (" + fmt.Sprintf("%2.3f", (float64(rf)*100)/float64(n)) + " %)<br>"
+		} else {
+			res += "РоялФлеш  = " + strconv.Itoa(rf) + " шт. (" + fmt.Sprintf("%2.1f", (float64(rf)*100)/float64(n)) + " %)<br>"
 		}
-		if sf != 0 {
-			if float64(sf)/float64(n) < 0.01 {
-				res += "СтритФлеш  = " + strconv.Itoa(sf) + " шт. (" + fmt.Sprintf("%2.3f", (float64(sf)*100)/float64(n)) + " %)<br>"
-			} else {
-				res += "СтритФлеш  = " + strconv.Itoa(sf) + " шт. (" + fmt.Sprintf("%2.1f", (float64(sf)*100)/float64(n)) + " %)<br>"
-			}
+	}
+	if sf != 0 {
+		if float64(sf)/float64(n) < 0.01 {
+			res += "СтритФлеш  = " + strconv.Itoa(sf) + " шт. (" + fmt.Sprintf("%2.3f", (float64(sf)*100)/float64(n)) + " %)<br>"
+		} else {
+			res += "СтритФлеш  = " + strconv.Itoa(sf) + " шт. (" + fmt.Sprintf("%2.1f", (float64(sf)*100)/float64(n)) + " %)<br>"
 		}
-		if k != 0 {
-			if float64(k)/float64(n) < 0.01 {
-				res += "Каре&emsp;&emsp;&emsp; = " + strconv.Itoa(k) + " шт. (" + fmt.Sprintf("%2.3f", (float64(k)*100)/float64(n)) + " %)<br>"
-			} else {
-				res += "Каре&emsp;&emsp;&emsp; = " + strconv.Itoa(k) + " шт. (" + fmt.Sprintf("%2.1f", (float64(k)*100)/float64(n)) + " %)<br>"
-			}
+	}
+	if k != 0 {
+		if float64(k)/float64(n) < 0.01 {
+			res += "Каре&emsp;&emsp;&emsp; = " + strconv.Itoa(k) + " шт. (" + fmt.Sprintf("%2.3f", (float64(k)*100)/float64(n)) + " %)<br>"
+		} else {
+			res += "Каре&emsp;&emsp;&emsp; = " + strconv.Itoa(k) + " шт. (" + fmt.Sprintf("%2.1f", (float64(k)*100)/float64(n)) + " %)<br>"
 		}
-		if fh != 0 {
-			if float64(fh)/float64(n) < 0.01 {
-				res += "ФуллХаус&ensp; = " + strconv.Itoa(fh) + " шт. (" + fmt.Sprintf("%2.3f", (float64(fh)*100)/float64(n)) + " %)<br>"
-			} else {
-				res += "ФуллХаус&ensp; = " + strconv.Itoa(fh) + " шт. (" + fmt.Sprintf("%2.1f", (float64(fh)*100)/float64(n)) + " %)<br>"
-			}
+	}
+	if fh != 0 {
+		if float64(fh)/float64(n) < 0.01 {
+			res += "ФуллХаус&ensp; = " + strconv.Itoa(fh) + " шт. (" + fmt.Sprintf("%2.3f", (float64(fh)*100)/float64(n)) + " %)<br>"
+		} else {
+			res += "ФуллХаус&ensp; = " + strconv.Itoa(fh) + " шт. (" + fmt.Sprintf("%2.1f", (float64(fh)*100)/float64(n)) + " %)<br>"
 		}
-		if f != 0 {
-			if float64(f)/float64(n) < 0.01 {
-				res += "Флеш&emsp;&emsp;&ensp; = " + strconv.Itoa(f) + " шт. (" + fmt.Sprintf("%2.3f", (float64(f)*100)/float64(n)) + " %)<br>"
-			} else {
-				res += "Флеш&emsp;&emsp;&ensp; = " + strconv.Itoa(f) + " шт. (" + fmt.Sprintf("%2.1f", (float64(f)*100)/float64(n)) + " %)<br>"
-			}
+	}
+	if f != 0 {
+		if float64(f)/float64(n) < 0.01 {
+			res += "Флеш&emsp;&emsp;&ensp; = " + strconv.Itoa(f) + " шт. (" + fmt.Sprintf("%2.3f", (float64(f)*100)/float64(n)) + " %)<br>"
+		} else {
+			res += "Флеш&emsp;&emsp;&ensp; = " + strconv.Itoa(f) + " шт. (" + fmt.Sprintf("%2.1f", (float64(f)*100)/float64(n)) + " %)<br>"
 		}
-		if s != 0 {
-			if float64(s)/float64(n) < 0.01 {
-				res += "Стрит&emsp;&emsp;&nbsp; = " + strconv.Itoa(s) + " шт. (" + fmt.Sprintf("%2.3f", (float64(s)*100)/float64(n)) + " %)<br>"
-			} else {
-				res += "Стрит&emsp;&emsp;&nbsp; = " + strconv.Itoa(s) + " шт. (" + fmt.Sprintf("%2.1f", (float64(s)*100)/float64(n)) + " %)<br>"
-			}
+	}
+	if s != 0 {
+		if float64(s)/float64(n) < 0.01 {
+			res += "Стрит&emsp;&emsp;&nbsp; = " + strconv.Itoa(s) + " шт. (" + fmt.Sprintf("%2.3f", (float64(s)*100)/float64(n)) + " %)<br>"
+		} else {
+			res += "Стрит&emsp;&emsp;&nbsp; = " + strconv.Itoa(s) + " шт. (" + fmt.Sprintf("%2.1f", (float64(s)*100)/float64(n)) + " %)<br>"
 		}
-		if c != 0 {
-			if float64(c)/float64(n) < 0.01 {
-				res += "Сет&emsp;&emsp;&emsp;&ensp; = " + strconv.Itoa(c) + " шт. (" + fmt.Sprintf("%2.3f", (float64(c)*100)/float64(n)) + " %)<br>"
-			} else {
-				res += "Сет&emsp;&emsp;&emsp;&ensp; = " + strconv.Itoa(c) + " шт. (" + fmt.Sprintf("%2.1f", (float64(c)*100)/float64(n)) + " %)<br>"
-			}
+	}
+	if c != 0 {
+		if float64(c)/float64(n) < 0.01 {
+			res += "Сет&emsp;&emsp;&emsp;&ensp; = " + strconv.Itoa(c) + " шт. (" + fmt.Sprintf("%2.3f", (float64(c)*100)/float64(n)) + " %)<br>"
+		} else {
+			res += "Сет&emsp;&emsp;&emsp;&ensp; = " + strconv.Itoa(c) + " шт. (" + fmt.Sprintf("%2.1f", (float64(c)*100)/float64(n)) + " %)<br>"
 		}
-		if dp != 0 {
-			if float64(dp)/float64(n) < 0.01 {
-				res += "Две пары&nbsp;&nbsp; = " + strconv.Itoa(dp) + " шт. (" + fmt.Sprintf("%2.3f", (float64(dp)*100)/float64(n)) + " %)<br>"
-			} else {
-				res += "Две пары&nbsp;&nbsp; = " + strconv.Itoa(dp) + " шт. (" + fmt.Sprintf("%2.1f", (float64(dp)*100)/float64(n)) + " %)<br>"
-			}
+	}
+	if dp != 0 {
+		if float64(dp)/float64(n) < 0.01 {
+			res += "Две пары&nbsp;&nbsp; = " + strconv.Itoa(dp) + " шт. (" + fmt.Sprintf("%2.3f", (float64(dp)*100)/float64(n)) + " %)<br>"
+		} else {
+			res += "Две пары&nbsp;&nbsp; = " + strconv.Itoa(dp) + " шт. (" + fmt.Sprintf("%2.1f", (float64(dp)*100)/float64(n)) + " %)<br>"
 		}
-		if pr != 0 {
-			if float64(pr)/float64(n) < 0.01 {
-				res += "Пара&emsp;&emsp;&emsp; = " + strconv.Itoa(pr) + " шт. (" + fmt.Sprintf("%2.3f", (float64(pr)*100)/float64(n)) + " %)<br>"
-			} else {
-				res += "Пара&emsp;&emsp;&emsp; = " + strconv.Itoa(pr) + " шт. (" + fmt.Sprintf("%2.1f", (float64(pr)*100)/float64(n)) + " %)<br>"
-			}
+	}
+	if pr != 0 {
+		if float64(pr)/float64(n) < 0.01 {
+			res += "Пара&emsp;&emsp;&emsp; = " + strconv.Itoa(pr) + " шт. (" + fmt.Sprintf("%2.3f", (float64(pr)*100)/float64(n)) + " %)<br>"
+		} else {
+			res += "Пара&emsp;&emsp;&emsp; = " + strconv.Itoa(pr) + " шт. (" + fmt.Sprintf("%2.1f", (float64(pr)*100)/float64(n)) + " %)<br>"
 		}
-		if st != 0 {
-			if float64(pr)/float64(n) < 0.01 {
-				res += "СтаршКарта = " + strconv.Itoa(st) + " шт. (" + fmt.Sprintf("%2.3f", (float64(st)*100)/float64(n)) + " %)<br>"
-			} else {
-				res += "СтаршКарта = " + strconv.Itoa(st) + " шт. (" + fmt.Sprintf("%2.1f", (float64(st)*100)/float64(n)) + " %)<br>"
-			}
+	}
+	if st != 0 {
+		if float64(pr)/float64(n) < 0.01 {
+			res += "СтаршКарта = " + strconv.Itoa(st) + " шт. (" + fmt.Sprintf("%2.3f", (float64(st)*100)/float64(n)) + " %)<br>"
+		} else {
+			res += "СтаршКарта = " + strconv.Itoa(st) + " шт. (" + fmt.Sprintf("%2.1f", (float64(st)*100)/float64(n)) + " %)<br>"
 		}
 	}
 	return res
@@ -149,7 +151,7 @@ func (p *Poker) strComb(cardsComb []Card) string {
 	result := ""
 	for _, c := range cardsComb {
 		strCard := p.parCard(c)
-		result = result + " " + strCard
+		result += " " + strCard
 	}
 	return result
 }

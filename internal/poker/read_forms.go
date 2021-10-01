@@ -19,7 +19,7 @@ func (p *Poker) cardsGame(req *http.Request, formName string) (cardHand []Card) 
 			suit = "ch"
 		}
 		for i := 2; i < 15; i++ {
-			nForm = nForm + strconv.Itoa(i) + suit
+			nForm += strconv.Itoa(i) + suit
 			result := req.Form[nForm]
 			nForm = formName
 			if len(result) == 1 {
