@@ -175,6 +175,34 @@ func (p *Poker) statistics(tempComb []Card) []int {
 	return stat
 }
 
+// --- заполнение массива всеми комбинациями из 5-ти карт из колоды карт ---
+func (p *Poker) allCombinations_5_Cards(deckCards []Card) ([][]Card, int) {
+	len_deckCards := len(deckCards)
+	lenAllComb := p.combinatorika(5, uint64(len_deckCards))
+	allComb := make([][]Card, lenAllComb)
+	for i := range allComb {
+		allComb[i] = make([]Card, 5)
+	}
+	comb := 0
+	for i := 0; i < len_deckCards-4; i++ {
+		for j := 1 + i; j < len_deckCards-3; j++ {
+			for k := 1 + j; k < len_deckCards-2; k++ {
+				for l := 1 + k; l < len_deckCards-1; l++ {
+					for m := 1 + l; m < len_deckCards; m++ {
+						allComb[comb][0] = deckCards[i]
+						allComb[comb][1] = deckCards[j]
+						allComb[comb][2] = deckCards[k]
+						allComb[comb][3] = deckCards[l]
+						allComb[comb][4] = deckCards[m]
+						comb++
+					}
+				}
+			}
+		}
+	}
+	return allComb, comb
+}
+
 // --- суммируем 2 массива stat к statResult ---
 func (p *Poker) sumStat(statResult, stat []int) []int {
 	statResult[0] += stat[0]
