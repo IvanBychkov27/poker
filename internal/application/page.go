@@ -131,7 +131,10 @@ const (
    <input type="checkbox" name="table14ch"/>
 </p>
 <br><br>
-<p>Введите <B>вышедшие</B> карты:</p>
+
+ <details>
+  <summary>Введите <B>вышедшие</B> карты:</summary>
+
 <p>&emsp; &emsp; &nbsp; 2 &ensp; 3 &ensp; 4 &ensp; 5 &ensp; 6 &ensp; 7 &ensp; 8&ensp; 9&ensp; 10&ensp; V&ensp; D &ensp; K &ensp; T</p>
 <p>Пик&nbsp;
    <input type="checkbox" name="out2p"/>
@@ -193,6 +196,8 @@ const (
    <input type="checkbox" name="out13ch"/>
    <input type="checkbox" name="out14ch"/>
 </p>
+ </details>
+
 <br>
 <p>Количество соперников:
    <input type="number" name="nPlayers" value="1" min="1" max="15" size="1" step="1"">
