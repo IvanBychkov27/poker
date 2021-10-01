@@ -23,13 +23,11 @@ func (p *Poker) percentWinsDiffNumbersOpponents(x float64, n int) float64 {
 
 // --- расчет кол-ва комбинаций по формуле комбинаторики:  k из n  =  n! / (k! * (n - k)! )  - где k < n !!! --- сочетания без повторений
 func (p *Poker) combinatorika(k, n uint64) uint64 {
-	var comb, chislitel uint64
-	chislitel = n
+	num := n
 	for i := uint64(1); i < k; i++ {
-		chislitel *= n - i
+		num *= n - i
 	}
-	comb = chislitel / p.factorial(k)
-	return comb
+	return num / p.factorial(k)
 }
 
 // --- расчет факториала ---
@@ -76,11 +74,14 @@ func (p *Poker) factorial(x uint64) uint64 { // алгоритм "в лоб"
 		res = uint64(2432902008176640000)
 	case 21:
 		res = uint64(14197454024290336768)
+	default:
+		p.logger.Debug("error factorial x > 21")
 	}
 
 	return res
 }
 
+//------------------------
 func (p *Poker) factorial_02(n uint64) uint64 { // наивный алгоритм
 	res := uint64(1)
 	for i := uint64(2); i < n+1; i++ {

@@ -17,26 +17,26 @@ func (p *Poker) buildPokerWin(cardsHand, cardsTable, outCards []Card, nomberOppo
 
 	switch len(cardsTable) {
 	case 0:
-		message = message + p.cardsDistributed(cardsHand, cardsTable, outCards)
-		message = message + "Ваши возможные варианты комбинаций: <br>"
+		message += p.cardsDistributed(cardsHand, cardsTable, outCards)
+		message += "Ваши возможные варианты комбинаций: <br>"
 		dCardNoFull := p.deckCards_NoFull(allOutCardsFromDeck)
 		statAllMaxCombHand := p.statAllMaxCombHand_2_cards(dCardNoFull, cardsHandAndTable)
-		message = message + p.printStatCombination(statAllMaxCombHand)
-		message = message + p.recommendations(statAllMaxCombHand)
+		message += p.printStatCombination(statAllMaxCombHand)
+		message += p.recommendations(statAllMaxCombHand)
 	case 3:
-		message = message + p.cardsDistributed(cardsHand, cardsTable, outCards)
-		message = message + "Ваши возможные варианты комбинаций: <br>"
+		message += p.cardsDistributed(cardsHand, cardsTable, outCards)
+		message += "Ваши возможные варианты комбинаций: <br>"
 		dCardNoFull := p.deckCards_NoFull(allOutCardsFromDeck)
 		statAllMaxCombHand := p.statAllMaxCombHand_5_cards(dCardNoFull, cardsHandAndTable)
-		message = message + p.printStatCombination(statAllMaxCombHand)
-		message = message + p.recommendations(statAllMaxCombHand)
+		message += p.printStatCombination(statAllMaxCombHand)
+		message += p.recommendations(statAllMaxCombHand)
 	case 4:
-		message = message + p.cardsDistributed(cardsHand, cardsTable, outCards)
-		message = message + "Ваши возможные варианты комбинаций: <br>"
+		message += p.cardsDistributed(cardsHand, cardsTable, outCards)
+		message += "Ваши возможные варианты комбинаций: <br>"
 		dCardNoFull := p.deckCards_NoFull(allOutCardsFromDeck)
 		statAllMaxCombHand := p.statAllMaxCombHand_6_cards(dCardNoFull, cardsHandAndTable)
-		message = message + p.printStatCombination(statAllMaxCombHand)
-		message = message + p.recommendations(statAllMaxCombHand)
+		message += p.printStatCombination(statAllMaxCombHand)
+		message += p.recommendations(statAllMaxCombHand)
 	case 5:
 		yourCombCards = p.maxPokerCombinationOf7Cards(cardsHandAndTable)
 		yourCombCards = p.sortComb(yourCombCards)
@@ -72,27 +72,22 @@ func (p *Poker) cardsControl(cardsHand, cardsTable, outCards []Card) (massage st
 	return ""
 }
 
-func (p *Poker) recommendations(statInfo []int) (massage string) {
-	massage = massage + "<br>"
+func (p *Poker) recommendations(statInfo []int) string {
 	if statInfo[0] < statInfo[10]/2 {
-		massage = massage + "<B>Рекомендуем играть!</B><br>"
-	} else {
-		massage = massage + "Далее рекомендуем не играть, но решать тебе!<br>"
+		return "<br><B>Рекомендуем играть!</B><br>"
 	}
-	return massage
+	return "<br>Далее рекомендуем не играть, но решать тебе!<br>"
 }
 
-func (p *Poker) cardsDistributed(cardsHand, cardsTable, outCards []Card) (massage string) {
-	result := ""
-	result = result + "Карты<br><br>"
-	result = result + "на руках: " + p.cardNameFilesImage(cardsHand) + "<br><br>"
+func (p *Poker) cardsDistributed(cardsHand, cardsTable, outCards []Card) string {
+	result := "<B>Карты</B><br><br>на руках: "
+	result += p.cardNameFilesImage(cardsHand) + "<br><br><br>"
 	if len(cardsTable) != 0 {
-		result = result + "на столе: " + p.cardNameFilesImage(cardsTable) + "<br><br>"
+		result += "на столе: " + p.cardNameFilesImage(cardsTable) + "<br><br><br>"
 	}
 	if len(outCards) != 0 {
-		result = result + "вышедшие: " + p.cardNameFilesImage(outCards) + "<br><br>"
+		result += "вышедшие: " + p.cardNameFilesImage(outCards) + "<br><br><br>"
 	}
-	result = result + "<br>"
 	return result
 }
 
