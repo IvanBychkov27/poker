@@ -5,9 +5,9 @@ import (
 	"os"
 )
 
-// --- Сохранение результата в файл index.html ---
+// --- Сохранение результата в файл table.html ---
 func (p *Poker) saveResultFileHTML(massage string) {
-	file, err := os.Create("index.html")
+	file, err := os.Create("table.html")
 	if err != nil {
 		fmt.Println("Ошибка создания файла: ", err)
 	}

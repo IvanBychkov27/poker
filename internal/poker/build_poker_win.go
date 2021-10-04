@@ -1,5 +1,9 @@
 package poker
 
+import (
+	"strings"
+)
+
 // --- Расчет покерной вероятности ---
 func (p *Poker) buildPokerWin(cardsHand, cardsTable, outCards []Card, nomberOpponents int) (yourCombCards []Card, nameComb string, victory float64, message string) {
 	cardsHandAndTable := cardsHand
@@ -80,6 +84,17 @@ func (p *Poker) recommendations(statInfo []int) string {
 }
 
 func (p *Poker) cardsDistributed(cardsHand, cardsTable, outCards []Card) string {
+	result := strings.Replace(p.Form, "{head_cards}", p.cardNameFilesImage(cardsHand), 1)
+	if len(cardsTable) != 0 {
+		result = strings.Replace(result, "{table_cards}", p.cardNameFilesImage(cardsTable), 1)
+	}
+	if len(outCards) != 0 {
+		result = strings.Replace(result, "{released_cards}", p.cardNameFilesImage(outCards), 1)
+	}
+	return result
+}
+
+func (p *Poker) cardsDistributed_01(cardsHand, cardsTable, outCards []Card) string {
 	result := "<B>Карты</B><br><br>на руках: "
 	result += p.cardNameFilesImage(cardsHand) + "<br><br><br>"
 	if len(cardsTable) != 0 {

@@ -1,6 +1,7 @@
 package poker
 
 import (
+	"fmt"
 	"go.uber.org/zap"
 	"net/http"
 	"strconv"
@@ -15,6 +16,7 @@ const (
 
 type Poker struct {
 	logger *zap.Logger
+	Form   string
 }
 
 func NewPoker(logger *zap.Logger) *Poker {
@@ -25,10 +27,14 @@ func NewPoker(logger *zap.Logger) *Poker {
 	return p
 }
 
-func (p *Poker) Poker(req *http.Request) string {
+func (p *Poker) Poker(req *http.Request) (string, error) {
 	cardHand := p.cardsGame(req, constCardsHand)
 	cardTable := p.cardsGame(req, constCardsTable)
 	cardOut := p.cardsGame(req, constCardsOut)
+
+	if len(cardHand) != 2 {
+		return "", fmt.Errorf("error: there are no two cards on hand ")
+	}
 
 	nPlayers := req.Form["nPlayers"]
 	nPlay, _ := strconv.Atoi(nPlayers[0])
@@ -45,5 +51,5 @@ func (p *Poker) Poker(req *http.Request) string {
 		p.logger.Debug("poker", zap.String("time", dif.String()))
 	}
 	//p.saveResultFileHTML(result)
-	return result
+	return result, nil
 }

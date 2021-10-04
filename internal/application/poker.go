@@ -7,15 +7,22 @@ import (
 
 func (app *Application) poker(wr http.ResponseWriter, req *http.Request) {
 	err := req.ParseForm()
-	_, _ = fmt.Fprint(wr, pageTop, form, err)
 	if err != nil {
-		_, _ = fmt.Fprintf(wr, anError, err)
-	} else {
-		nPlayers := req.Form["nPlayers"]
-		if len(nPlayers) > 0 {
-			result := app.p.Poker(req)
-			_, _ = fmt.Fprint(wr, result)
-		}
+		_, _ = fmt.Fprint(wr, pageTop, form, err, pageBottom)
+		return
 	}
-	_, _ = fmt.Fprint(wr, pageBottom)
+
+	nPlayers := req.Form["nPlayers"]
+	if len(nPlayers) > 0 {
+
+		resultForm, errPoker := app.p.Poker(req)
+
+		if errPoker != nil {
+			_, _ = fmt.Fprint(wr, pageTop, form, pageBottom)
+		}
+		_, _ = fmt.Fprint(wr, pageTop, resultForm, pageBottom)
+	} else {
+		_, _ = fmt.Fprint(wr, pageTop, form, pageBottom)
+	}
+
 }
