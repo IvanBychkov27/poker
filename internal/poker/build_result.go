@@ -2,6 +2,7 @@ package poker
 
 import (
 	"fmt"
+	"strings"
 )
 
 func (p *Poker) buildResult(cardsHand, cardsTable, outCards []Card, nPlayers int) string {
@@ -12,18 +13,18 @@ func (p *Poker) buildResult(cardsHand, cardsTable, outCards []Card, nPlayers int
 	}
 
 	result := p.cardsDistributed(cardsHand, cardsTable, outCards)
-	result += "<h2>Ваша комбинация: <B>" + nameComb + "</B><br></h2>"
-	result += "<B>" + p.cardNameFilesImage(comb) + "</B><br><br>"
-	result += "Вероятность победы: <B>" + fmt.Sprintf("%2.2f", victory) + " %</B><BR>"
+	myComb := "<h2><B>" + nameComb + "</B><br></h2>"
+	myComb += "<B>" + p.cardNameFilesImage(comb) + "</B><br><br>"
+	myComb += "Вероятность победы: <B>" + fmt.Sprintf("%2.2f", victory) + " %</B><BR>"
 
 	if victory > 50 {
-		result += "<B>Рекомендуем увеличить ставку!!!</B><br>"
+		myComb += "<B>Рекомендуем увеличить ставку!!!</B><br>"
 	}
 
-	result += "<br>-------------------------------------------<br>"
-	result += "Возможные варианты комбинаций у соперников:<br>"
-	result += "-------------------------------------------<br>"
-	result += p.statCombOpponents(cardsTable, cardsHand, outCards)
+	result = strings.Replace(result, "{head_victory}", myComb, 1)
+
+	allApp := p.statCombOpponents(cardsTable, cardsHand, outCards)
+	result = strings.Replace(result, "{table_victory}", allApp, 1)
 
 	return result
 }

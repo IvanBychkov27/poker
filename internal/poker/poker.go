@@ -33,7 +33,7 @@ func (p *Poker) Poker(req *http.Request) (string, error) {
 	cardOut := p.cardsGame(req, constCardsOut)
 
 	if len(cardHand) != 2 {
-		return "", fmt.Errorf("error: there are no two cards on hand ")
+		return "", fmt.Errorf("Введите две Ваши карты!")
 	}
 
 	nPlayers := req.Form["nPlayers"]

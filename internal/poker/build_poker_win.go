@@ -8,68 +8,61 @@ import (
 func (p *Poker) buildPokerWin(cardsHand, cardsTable, outCards []Card, nomberOpponents int) (yourCombCards []Card, nameComb string, victory float64, message string) {
 	cardsHandAndTable := cardsHand
 	cardsHandAndTable = append(cardsHandAndTable, cardsTable...)
+
 	allOutCardsFromDeck := cardsHandAndTable
 	allOutCardsFromDeck = append(allOutCardsFromDeck, outCards...)
 
 	if len(cardsHand) != 2 {
-		message = "Введите две Ваши карты!<br>"
-		return yourCombCards, nameComb, victory, message
+		message = p.Form + "Введите две Ваши карты!<br>"
+		return
 	}
 	if message = p.cardsControl(cardsHand, cardsTable, outCards); message != "" {
-		return yourCombCards, nameComb, victory, message
+		return
 	}
+
+	var statAllMaxCombHand []int
+	dCardNoFull := p.deckCards_NoFull(allOutCardsFromDeck)
 
 	switch len(cardsTable) {
 	case 0:
-		message += p.cardsDistributed(cardsHand, cardsTable, outCards)
-		message += "Ваши возможные варианты комбинаций: <br>"
-		dCardNoFull := p.deckCards_NoFull(allOutCardsFromDeck)
-		statAllMaxCombHand := p.statAllMaxCombHand_2_cards(dCardNoFull, cardsHandAndTable)
-		message += p.printStatCombination(statAllMaxCombHand)
-		message += p.recommendations(statAllMaxCombHand)
+		statAllMaxCombHand = p.statAllMaxCombHand_2_cards(dCardNoFull, cardsHandAndTable)
 	case 3:
-		message += p.cardsDistributed(cardsHand, cardsTable, outCards)
-		message += "Ваши возможные варианты комбинаций: <br>"
-		dCardNoFull := p.deckCards_NoFull(allOutCardsFromDeck)
-		statAllMaxCombHand := p.statAllMaxCombHand_5_cards(dCardNoFull, cardsHandAndTable)
-		message += p.printStatCombination(statAllMaxCombHand)
-		message += p.recommendations(statAllMaxCombHand)
+		statAllMaxCombHand = p.statAllMaxCombHand_5_cards(dCardNoFull, cardsHandAndTable)
 	case 4:
-		message += p.cardsDistributed(cardsHand, cardsTable, outCards)
-		message += "Ваши возможные варианты комбинаций: <br>"
-		dCardNoFull := p.deckCards_NoFull(allOutCardsFromDeck)
-		statAllMaxCombHand := p.statAllMaxCombHand_6_cards(dCardNoFull, cardsHandAndTable)
-		message += p.printStatCombination(statAllMaxCombHand)
-		message += p.recommendations(statAllMaxCombHand)
+		statAllMaxCombHand = p.statAllMaxCombHand_6_cards(dCardNoFull, cardsHandAndTable)
 	case 5:
 		yourCombCards = p.maxPokerCombinationOf7Cards(cardsHandAndTable)
 		yourCombCards = p.sortComb(yourCombCards)
 		nameComb, _ = p.pokerCombination(yourCombCards)
 		victory = p.percentVictory(cardsTable, cardsHand, outCards)
 		victory = p.percentWinsDiffNumbersOpponents(victory, nomberOpponents)
+		return yourCombCards, nameComb, victory * 100, message
 	default:
-		message = "Введите все карты выложенные на столе!<br>"
+		message = p.Form + "Введите все карты выложенные на столе (3-5 карт)!<br>"
+		return
 	}
-	return yourCombCards, nameComb, victory * 100, message
+
+	form := p.cardsDistributed(cardsHand, cardsTable, outCards)
+	message = p.printStatCombination(statAllMaxCombHand)
+	message += p.recommendations(statAllMaxCombHand)
+	message = strings.Replace(form, "{head_victory}", message, 1)
+	return
 }
 
 // --- проверка введенных карт на корректность ввода ---
-func (p *Poker) cardsControl(cardsHand, cardsTable, outCards []Card) (massage string) {
+func (p *Poker) cardsControl(cardsHand, cardsTable, outCards []Card) string {
 	for _, v := range cardsTable {
 		if cardsHand[0] == v || cardsHand[1] == v {
-			massage = "Не корректный ввод карт стола! "
-			return massage
+			return p.Form + "Не корректный ввод карт стола! "
 		}
 	}
 	for _, v := range outCards {
 		if cardsHand[0] == v || cardsHand[1] == v {
-			massage = "Не корректный ввод вышедших карт! "
-			return massage
+			return p.Form + "Не корректный ввод вышедших карт! "
 		}
 		for _, vt := range cardsTable {
 			if vt == v {
-				massage = "Не корректный ввод вышедших карт! "
-				return massage
+				return p.Form + "Не корректный ввод вышедших карт! "
 			}
 		}
 	}

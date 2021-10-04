@@ -1,7 +1,9 @@
 package application
 
 const (
-	pageBottom = `</body></html>`
+	pageBottom = `
+<p><H5><I>* при вводе только 2х своих карт время расчета составит около 2 сек.</I></H5>
+</body></html>`
 
 	pageTop = `
 <!DOCTYPE HTML>
@@ -11,7 +13,7 @@ const (
 		<title>Poker combinations</title>
 		<style>
         table {
-            width: 1000px;
+            width: 1300px;
             /* Ширина таблицы */
             border: black 1px solid;
             /* Стиль рамки таблицы */
@@ -67,7 +69,7 @@ const (
         <tr>
             <th>Введите <B>две Ваши</B> карты:</th>
             <th>Ваши карты</th>
-            <th>Вероятность победы</th>
+            <th>Ваша комбинация</th>
         </tr>
         </thead>
         <tbody>
@@ -137,12 +139,12 @@ const (
                 </p>
             </td>
             <td>{head_cards}</td>
-            <td>{head_victory}</td>
+            <td style="text-align: left">{head_victory}</td>
         </tr>
         <tr>
             <td>Введите <B>карты на столе</B>:</td>
             <td>Карты на столе</td>
-            <td> </td>
+            <td>Возможные варианты комбинаций</td>
         </tr>
         <tr>
             <td>
@@ -211,7 +213,7 @@ const (
 
             </td>
             <td>{table_cards}</td>
-            <td>{table_victory}</td>
+            <td style="text-align: left">{table_victory}</td>
         </tr>
 
         <tr>
