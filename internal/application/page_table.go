@@ -296,7 +296,7 @@ const (
 
 <br>
 <p>Количество соперников:
-    <input type="number" name="nPlayers" value="1" min="1" max="15" size="1" step="1">
+    <input type="number" name="nPlayers" value="1"  min="1" max="15" size="1" step="1">
 </p>
 <br>
 <input type="submit" value="Расчитать вероятность">

@@ -9,7 +9,8 @@ import (
 func (app *Application) poker(wr http.ResponseWriter, req *http.Request) {
 	err := req.ParseForm()
 	if err != nil {
-		_, _ = fmt.Fprint(wr, pageTop, app.clearForm(form), err, pageBottom)
+		data := app.p.SetCheckbox(form)
+		_, _ = fmt.Fprint(wr, pageTop, app.clearForm(data), err, pageBottom)
 		return
 	}
 
@@ -19,12 +20,16 @@ func (app *Application) poker(wr http.ResponseWriter, req *http.Request) {
 		resultForm, errPoker := app.p.Poker(req)
 
 		if errPoker != nil {
-			_, _ = fmt.Fprint(wr, pageTop, app.clearForm(form), errPoker.Error(), pageBottom)
+			data := app.p.SetCheckbox(form)
+			_, _ = fmt.Fprint(wr, pageTop, app.clearForm(data), errPoker.Error(), pageBottom)
 			return
 		}
-		_, _ = fmt.Fprint(wr, pageTop, app.clearForm(resultForm), pageBottom)
+
+		data := app.p.SetCheckbox(resultForm)
+		_, _ = fmt.Fprint(wr, pageTop, app.clearForm(data), pageBottom)
 	} else {
-		_, _ = fmt.Fprint(wr, pageTop, app.clearForm(form), pageBottom)
+		data := app.p.SetCheckbox(form)
+		_, _ = fmt.Fprint(wr, pageTop, app.clearForm(data), pageBottom)
 	}
 
 }

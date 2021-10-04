@@ -6,7 +6,7 @@ import (
 )
 
 // --- чтение введенных карт из формы---
-func (p *Poker) cardsGame(req *http.Request, formName string) (cardHand []Card) {
+func (p *Poker) cardsGame(req *http.Request, formName string) (cards []Card) {
 	nForm := formName
 	suit := "p"
 	for m := 1; m < 5; m++ {
@@ -23,9 +23,9 @@ func (p *Poker) cardsGame(req *http.Request, formName string) (cardHand []Card) 
 			result := req.Form[nForm]
 			nForm = formName
 			if len(result) == 1 {
-				cardHand = append(cardHand, Card{byte(i), byte(m)})
+				cards = append(cards, Card{byte(i), byte(m)})
 			}
 		}
 	}
-	return cardHand
+	return cards
 }
