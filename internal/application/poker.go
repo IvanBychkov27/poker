@@ -1,7 +1,6 @@
 package application
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 )
@@ -9,12 +8,12 @@ import (
 func (app *Application) poker(wr http.ResponseWriter, req *http.Request) {
 	err := req.ParseForm()
 	if err != nil {
-		_, _ = fmt.Fprint(wr, pageTop, form, err, pageBottom)
+		wr.Write([]byte(pageTop + form + err.Error() + pageBottom))
 		return
 	}
 
 	if req.Form["resetButton"] != nil {
-		_, _ = fmt.Fprint(wr, pageTop, app.clearForm(form), pageBottom)
+		wr.Write([]byte(pageTop + app.clearForm(form) + pageBottom))
 		return
 	}
 
@@ -22,20 +21,18 @@ func (app *Application) poker(wr http.ResponseWriter, req *http.Request) {
 	if len(nPlayers) > 0 {
 
 		resultForm, errPoker := app.p.Poker(req)
-
 		if errPoker != nil {
 			data := app.p.SetCheckbox(form)
-			_, _ = fmt.Fprint(wr, pageTop, app.clearForm(data), errPoker.Error(), pageBottom)
+			wr.Write([]byte(pageTop + app.clearForm(data) + errPoker.Error() + pageBottom))
 			return
 		}
 
 		data := app.p.SetCheckbox(resultForm)
-		_, _ = fmt.Fprint(wr, app.clearForm(data), pageBottom)
+		wr.Write([]byte(app.clearForm(data) + pageBottom))
 	} else {
 		data := app.p.SetCheckbox(form)
-		_, _ = fmt.Fprint(wr, pageTop, app.clearForm(data), pageBottom)
+		wr.Write([]byte(pageTop + app.clearForm(data) + pageBottom))
 	}
-
 }
 
 func (app *Application) clearForm(form string) string {

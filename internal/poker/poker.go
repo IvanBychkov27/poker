@@ -10,9 +10,9 @@ import (
 )
 
 const (
-	constCardsHand  = "hand"
-	constCardsTable = "table"
-	constCardsOut   = "out"
+	cardsHand  = "hand"
+	cardsTable = "table"
+	cardsOut   = "out"
 )
 
 type Poker struct {
@@ -33,9 +33,9 @@ func NewPoker(logger *zap.Logger) *Poker {
 }
 
 func (p *Poker) Poker(req *http.Request) (string, error) {
-	cardHand := p.cardsGame(req, constCardsHand)
-	cardTable := p.cardsGame(req, constCardsTable)
-	cardOut := p.cardsGame(req, constCardsOut)
+	cardHand := p.cardsGame(req, cardsHand)
+	cardTable := p.cardsGame(req, cardsTable)
+	cardOut := p.cardsGame(req, cardsOut)
 
 	nPlayers := req.Form["nPlayers"]
 	nPlay, _ := strconv.Atoi(nPlayers[0])
@@ -60,77 +60,42 @@ func (p *Poker) Poker(req *http.Request) (string, error) {
 	if dif.Milliseconds() > 100 {
 		p.logger.Debug("poker", zap.String("time", dif.String()))
 	}
-	//p.saveResultFileHTML(result)
 	return result, nil
 }
 
 // setCheckbox включает флажки на форме в соответствии с выбранными картами
 func (p *Poker) SetCheckbox(form string) string {
-	for _, card := range p.cardHand {
-		suit := "p"
-		switch card.suil {
-		case 2:
-			suit = "k"
-		case 3:
-			suit = "b"
-		case 4:
-			suit = "ch"
-		}
-
-		cardForm := constCardsHand + strconv.Itoa(int(card.value)) + suit
-
-		if !strings.Contains(form, cardForm) {
-			continue
-		}
-		idx := strings.Index(form, cardForm) + len(cardForm) + 1
-		form = form[:idx] + " checked" + form[idx:]
-	}
-
-	for _, card := range p.cardTable {
-		suit := "p"
-		switch card.suil {
-		case 2:
-			suit = "k"
-		case 3:
-			suit = "b"
-		case 4:
-			suit = "ch"
-		}
-
-		cardForm := constCardsTable + strconv.Itoa(int(card.value)) + suit
-
-		if !strings.Contains(form, cardForm) {
-			continue
-		}
-		idx := strings.Index(form, cardForm) + len(cardForm) + 1
-		form = form[:idx] + " checked" + form[idx:]
-	}
-
-	for _, card := range p.cardOut {
-		suit := "p"
-		switch card.suil {
-		case 2:
-			suit = "k"
-		case 3:
-			suit = "b"
-		case 4:
-			suit = "ch"
-		}
-
-		cardForm := constCardsOut + strconv.Itoa(int(card.value)) + suit
-
-		if !strings.Contains(form, cardForm) {
-			continue
-		}
-		idx := strings.Index(form, cardForm) + len(cardForm) + 1
-		form = form[:idx] + " checked" + form[idx:]
-	}
+	res := p.setCheck(form, cardsHand, p.cardHand)
+	res = p.setCheck(res, cardsTable, p.cardTable)
+	res = p.setCheck(res, cardsOut, p.cardOut)
 
 	players := "nPlayers"
-	if strings.Contains(form, players) {
-		idx := strings.Index(form, players) + len(players) + 9
-		form = form[:idx] + strconv.Itoa(p.nPlay) + `"` + form[idx+2:]
+	if strings.Contains(res, players) {
+		idx := strings.Index(res, players) + len(players) + 9
+		res = res[:idx] + strconv.Itoa(p.nPlay) + `"` + res[idx+2:]
 	}
+	return res
+}
 
+func (p *Poker) setCheck(form, typeCheckbox string, cards []Card) string {
+	for _, card := range cards {
+		suit := "p"
+		switch card.suil {
+		case 2:
+			suit = "k"
+		case 3:
+			suit = "b"
+		case 4:
+			suit = "ch"
+		}
+
+		cardForm := typeCheckbox + strconv.Itoa(int(card.value)) + suit
+
+		if !strings.Contains(form, cardForm) {
+			continue
+		}
+		idx := strings.Index(form, cardForm) + len(cardForm) + 1
+		form = form[:idx] + " checked" + form[idx:]
+	}
 	return form
 }

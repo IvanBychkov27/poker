@@ -29,8 +29,7 @@ func (p *Poker) buildResult(cardsHand, cardsTable, outCards []Card, nPlayers int
 	allApp, data := p.statCombOpponents(cardsTable, cardsHand, outCards)
 	resultForm = strings.Replace(resultForm, "{table_victory}", allApp, 1)
 
-	dataChart := p.setDataChart(data)
-	resultPageTop := strings.Replace(p.PageTop, "{chart_comb}", dataChart, 1)
+	resultPageTop := strings.Replace(p.PageTop, "{chart_comb}", p.setDataChart(data), 1)
 
 	return resultPageTop + resultForm
 }

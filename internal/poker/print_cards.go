@@ -129,67 +129,7 @@ func (p *Poker) printStatCombination(statComb []int) (string, map[string]float64
 	return res, data
 }
 
-func (p *Poker) nameCombination(n byte) string {
-	nComb := ""
-	switch n {
-	case 1: //"Пара":
-		nComb = pair
-	case 2: // "Две пары":
-		nComb = twoPair
-	case 3: //"Сет":
-		nComb = set
-	case 4: //"Стрит":
-		nComb = straight
-	case 5: //"Флеш":
-		nComb = flush
-	case 6: //"ФуллХаус":
-		nComb = fullHouse
-	case 7: //"Каре":
-		nComb = care
-	case 8: //"СтритФлеш":
-		nComb = straightFlush
-	case 9: //"РоялФлеш":
-		nComb = royalFlush
-	default:
-		nComb = highCard
-	}
-	return nComb
-}
-
-// --- печать колоды карт ---
-func (p *Poker) printDeckCards(deckCards []Card) {
-	var predCard byte
-	for _, c := range deckCards {
-		strCard := p.parCard(c)
-		if c.value < predCard {
-			fmt.Println()
-		}
-		fmt.Print(strCard, " ")
-		predCard = c.value
-	}
-	fmt.Println()
-}
-
-// --- печать комбинации карт ---
-func (p *Poker) printComb(cardsComb []Card) {
-	for _, c := range cardsComb {
-		strCard := p.parCard(c)
-		fmt.Print(strCard, " ")
-	}
-	fmt.Println()
-}
-
-// --- комбинации карт ---
-func (p *Poker) strComb(cardsComb []Card) string {
-	result := ""
-	for _, c := range cardsComb {
-		strCard := p.parCard(c)
-		result += " " + strCard
-	}
-	return result
-}
-
-// --- параметр карты - перевод карты в строку ---
+// ---- перевод карты в строку ---
 func (p *Poker) parCard(c Card) string {
 	parCardString := ""
 	switch c.value {

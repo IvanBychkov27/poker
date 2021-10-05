@@ -30,7 +30,6 @@ func New(logger *zap.Logger, cfg *config.Config, p *poker.Poker) *Application {
 
 	router := http.NewServeMux()
 	router.HandleFunc("/", app.poker)
-	router.HandleFunc("/pic/", app.handler)
 
 	app.server = &http.Server{}
 	app.server.Handler = router

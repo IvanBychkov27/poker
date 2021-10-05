@@ -46,8 +46,7 @@ func (p *Poker) buildPokerWin(cardsHand, cardsTable, outCards []Card, nomberOppo
 	var data map[string]float64
 	message, data = p.printStatCombination(statAllMaxCombHand)
 
-	dataChart := p.setDataChart(data)
-	resultPageTop := strings.Replace(p.PageTop, "{chart_comb}", dataChart, 1)
+	resultPageTop := strings.Replace(p.PageTop, "{chart_comb}", p.setDataChart(data), 1)
 
 	message += p.recommendations(statAllMaxCombHand)
 	message = resultPageTop + strings.Replace(form, "{head_victory}", message, 1)

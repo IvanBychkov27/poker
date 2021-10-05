@@ -1,13 +1,9 @@
 package poker
 
-import (
-	"fmt"
-)
-
 //--- статистика максимальных комбинаций из 7 карт: 1 карт из оставшейся колоды и + 6 карт на руках ---
 func (p *Poker) statAllMaxCombHand_6_cards(deckCards, handCards []Card) []int {
 	if len(handCards) != 6 {
-		fmt.Println("invalid combination handCards")
+		p.logger.Debug("invalid combination handCards")
 		return nil
 	}
 	statResult := make([]int, 11, 11)
@@ -32,7 +28,7 @@ func (p *Poker) statAllMaxCombHand_6_cards(deckCards, handCards []Card) []int {
 //--- статистика максимальных комбинаций из 7 карт: 2 карты из оставшейся колоды и + 5 карт на руках ---
 func (p *Poker) statAllMaxCombHand_5_cards(deckCards, handCards []Card) []int {
 	if len(handCards) != 5 {
-		fmt.Println("invalid combination handCards")
+		p.logger.Debug("invalid combination handCards")
 		return nil
 	}
 	ch := make(chan []int)
@@ -71,7 +67,7 @@ func (p *Poker) statAllMaxCombHand_5_cards(deckCards, handCards []Card) []int {
 //--- статистика максимальных комбинаций из 7 карт: 5 карт из оставшейся колоды и + 2 карты на руках ---
 func (p *Poker) statAllMaxCombHand_2_cards(deckCards, handCards []Card) []int {
 	if len(handCards) != 2 {
-		fmt.Println("invalid combination handCards")
+		p.logger.Debug("invalid combination handCards")
 		return nil
 	}
 
