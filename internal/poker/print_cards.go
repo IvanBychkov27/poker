@@ -5,12 +5,26 @@ import (
 	"strconv"
 )
 
+const (
+	royalFlush    = "РоялФлеш"
+	straightFlush = "СтритФлеш"
+	care          = "Каре"
+	fullHouse     = "ФуллХаус"
+	flush         = "Флеш"
+	straight      = "Стрит"
+	set           = "Сет"
+	twoPair       = "Две пары"
+	pair          = "Пара"
+	highCard      = "СтаршКарта"
+)
+
 // --- Печать инфо о кол-ве комбинаций ---
-func (p *Poker) printStatCombination(statComb []int) string {
+func (p *Poker) printStatCombination(statComb []int) (string, map[string]float64) {
 	if len(statComb) != 11 {
-		return ""
+		return "", nil
 	}
 	res := ""
+	data := make(map[string]float64)
 
 	n, rf := statComb[10], statComb[9]
 	sf, k := statComb[8], statComb[7]
@@ -21,104 +35,123 @@ func (p *Poker) printStatCombination(statComb []int) string {
 
 	res = "Кол-во всех комбинаций = " + strconv.Itoa(n) + " шт.<br>"
 	if rf != 0 {
-		ver := float64(rf) / float64(n)
-		if ver < 0.0001 {
-			res += "РоялФлеш  = " + strconv.Itoa(rf) + " шт. (" + fmt.Sprintf("%2.5f", (float64(rf)*100)/float64(n)) + " %)<br>"
-		} else if ver < 0.01 {
-			res += "РоялФлеш  = " + strconv.Itoa(rf) + " шт. (" + fmt.Sprintf("%2.3f", (float64(rf)*100)/float64(n)) + " %)<br>"
+		ver := float64(rf) * 100 / float64(n)
+		data[royalFlush] = ver
+		if ver < 0.01 {
+			res += royalFlush + "  = " + strconv.Itoa(rf) + " шт. (" + fmt.Sprintf("%2.5f", ver) + " %)<br>"
+		} else if ver < float64(1) {
+			res += royalFlush + "  = " + strconv.Itoa(rf) + " шт. (" + fmt.Sprintf("%2.3f", ver) + " %)<br>"
 		} else {
-			res += "РоялФлеш  = " + strconv.Itoa(rf) + " шт. (" + fmt.Sprintf("%2.1f", (float64(rf)*100)/float64(n)) + " %)<br>"
+			res += royalFlush + "  = " + strconv.Itoa(rf) + " шт. (" + fmt.Sprintf("%2.1f", ver) + " %)<br>"
 		}
 	}
 	if sf != 0 {
-		if float64(sf)/float64(n) < 0.01 {
-			res += "СтритФлеш  = " + strconv.Itoa(sf) + " шт. (" + fmt.Sprintf("%2.3f", (float64(sf)*100)/float64(n)) + " %)<br>"
+		ver := float64(sf) * 100 / float64(n)
+		data[straightFlush] = ver
+		if ver < float64(1) {
+			res += straightFlush + "  = " + strconv.Itoa(sf) + " шт. (" + fmt.Sprintf("%2.3f", ver) + " %)<br>"
 		} else {
-			res += "СтритФлеш  = " + strconv.Itoa(sf) + " шт. (" + fmt.Sprintf("%2.1f", (float64(sf)*100)/float64(n)) + " %)<br>"
+			res += straightFlush + "  = " + strconv.Itoa(sf) + " шт. (" + fmt.Sprintf("%2.1f", ver) + " %)<br>"
 		}
 	}
 	if k != 0 {
-		if float64(k)/float64(n) < 0.01 {
-			res += "Каре&emsp;&emsp;&emsp; = " + strconv.Itoa(k) + " шт. (" + fmt.Sprintf("%2.3f", (float64(k)*100)/float64(n)) + " %)<br>"
+		ver := float64(k) * 100 / float64(n)
+		data[care] = ver
+		if ver < float64(1) {
+			res += care + "&emsp;&emsp;&emsp; = " + strconv.Itoa(k) + " шт. (" + fmt.Sprintf("%2.3f", ver) + " %)<br>"
 		} else {
-			res += "Каре&emsp;&emsp;&emsp; = " + strconv.Itoa(k) + " шт. (" + fmt.Sprintf("%2.1f", (float64(k)*100)/float64(n)) + " %)<br>"
+			res += care + "&emsp;&emsp;&emsp; = " + strconv.Itoa(k) + " шт. (" + fmt.Sprintf("%2.1f", ver) + " %)<br>"
 		}
 	}
 	if fh != 0 {
-		if float64(fh)/float64(n) < 0.01 {
-			res += "ФуллХаус&ensp; = " + strconv.Itoa(fh) + " шт. (" + fmt.Sprintf("%2.3f", (float64(fh)*100)/float64(n)) + " %)<br>"
+		ver := float64(fh) * 100 / float64(n)
+		data[fullHouse] = ver
+		if ver < float64(1) {
+			res += fullHouse + "&ensp; = " + strconv.Itoa(fh) + " шт. (" + fmt.Sprintf("%2.3f", ver) + " %)<br>"
 		} else {
-			res += "ФуллХаус&ensp; = " + strconv.Itoa(fh) + " шт. (" + fmt.Sprintf("%2.1f", (float64(fh)*100)/float64(n)) + " %)<br>"
+			res += fullHouse + "&ensp; = " + strconv.Itoa(fh) + " шт. (" + fmt.Sprintf("%2.1f", ver) + " %)<br>"
 		}
 	}
 	if f != 0 {
-		if float64(f)/float64(n) < 0.01 {
-			res += "Флеш&emsp;&emsp;&ensp; = " + strconv.Itoa(f) + " шт. (" + fmt.Sprintf("%2.3f", (float64(f)*100)/float64(n)) + " %)<br>"
+		ver := float64(f) * 100 / float64(n)
+		data[flush] = ver
+		if ver < float64(1) {
+			res += flush + "&emsp;&emsp;&ensp; = " + strconv.Itoa(f) + " шт. (" + fmt.Sprintf("%2.3f", ver) + " %)<br>"
 		} else {
-			res += "Флеш&emsp;&emsp;&ensp; = " + strconv.Itoa(f) + " шт. (" + fmt.Sprintf("%2.1f", (float64(f)*100)/float64(n)) + " %)<br>"
+			res += flush + "&emsp;&emsp;&ensp; = " + strconv.Itoa(f) + " шт. (" + fmt.Sprintf("%2.1f", ver) + " %)<br>"
 		}
 	}
 	if s != 0 {
-		if float64(s)/float64(n) < 0.01 {
-			res += "Стрит&emsp;&emsp;&nbsp; = " + strconv.Itoa(s) + " шт. (" + fmt.Sprintf("%2.3f", (float64(s)*100)/float64(n)) + " %)<br>"
+		ver := float64(s) * 100 / float64(n)
+		data[straight] = ver
+		if ver < float64(1) {
+			res += straight + "&emsp;&emsp;&nbsp; = " + strconv.Itoa(s) + " шт. (" + fmt.Sprintf("%2.3f", ver) + " %)<br>"
 		} else {
-			res += "Стрит&emsp;&emsp;&nbsp; = " + strconv.Itoa(s) + " шт. (" + fmt.Sprintf("%2.1f", (float64(s)*100)/float64(n)) + " %)<br>"
+			res += straight + "&emsp;&emsp;&nbsp; = " + strconv.Itoa(s) + " шт. (" + fmt.Sprintf("%2.1f", ver) + " %)<br>"
 		}
 	}
 	if c != 0 {
-		if float64(c)/float64(n) < 0.01 {
-			res += "Сет&emsp;&emsp;&emsp;&ensp; = " + strconv.Itoa(c) + " шт. (" + fmt.Sprintf("%2.3f", (float64(c)*100)/float64(n)) + " %)<br>"
+		ver := float64(c) * 100 / float64(n)
+		data[set] = ver
+		if ver < float64(1) {
+			res += set + "&emsp;&emsp;&emsp;&ensp; = " + strconv.Itoa(c) + " шт. (" + fmt.Sprintf("%2.3f", ver) + " %)<br>"
 		} else {
-			res += "Сет&emsp;&emsp;&emsp;&ensp; = " + strconv.Itoa(c) + " шт. (" + fmt.Sprintf("%2.1f", (float64(c)*100)/float64(n)) + " %)<br>"
+			res += set + "&emsp;&emsp;&emsp;&ensp; = " + strconv.Itoa(c) + " шт. (" + fmt.Sprintf("%2.1f", ver) + " %)<br>"
 		}
 	}
 	if dp != 0 {
-		if float64(dp)/float64(n) < 0.01 {
-			res += "Две пары&nbsp;&nbsp; = " + strconv.Itoa(dp) + " шт. (" + fmt.Sprintf("%2.3f", (float64(dp)*100)/float64(n)) + " %)<br>"
+		ver := float64(dp) * 100 / float64(n)
+		data[twoPair] = ver
+		if ver < float64(1) {
+			res += twoPair + "&nbsp;&nbsp; = " + strconv.Itoa(dp) + " шт. (" + fmt.Sprintf("%2.3f", ver) + " %)<br>"
 		} else {
-			res += "Две пары&nbsp;&nbsp; = " + strconv.Itoa(dp) + " шт. (" + fmt.Sprintf("%2.1f", (float64(dp)*100)/float64(n)) + " %)<br>"
+			res += twoPair + "&nbsp;&nbsp; = " + strconv.Itoa(dp) + " шт. (" + fmt.Sprintf("%2.1f", ver) + " %)<br>"
 		}
 	}
 	if pr != 0 {
-		if float64(pr)/float64(n) < 0.01 {
-			res += "Пара&emsp;&emsp;&emsp; = " + strconv.Itoa(pr) + " шт. (" + fmt.Sprintf("%2.3f", (float64(pr)*100)/float64(n)) + " %)<br>"
+		ver := float64(pr) * 100 / float64(n)
+		data[pair] = ver
+		if ver < float64(1) {
+			res += pair + "&emsp;&emsp;&emsp; = " + strconv.Itoa(pr) + " шт. (" + fmt.Sprintf("%2.3f", ver) + " %)<br>"
 		} else {
-			res += "Пара&emsp;&emsp;&emsp; = " + strconv.Itoa(pr) + " шт. (" + fmt.Sprintf("%2.1f", (float64(pr)*100)/float64(n)) + " %)<br>"
+			res += pair + "&emsp;&emsp;&emsp; = " + strconv.Itoa(pr) + " шт. (" + fmt.Sprintf("%2.1f", ver) + " %)<br>"
 		}
 	}
 	if st != 0 {
-		if float64(pr)/float64(n) < 0.01 {
-			res += "СтаршКарта = " + strconv.Itoa(st) + " шт. (" + fmt.Sprintf("%2.3f", (float64(st)*100)/float64(n)) + " %)<br>"
+		ver := float64(st) * 100 / float64(n)
+		data[highCard] = ver
+		if ver < float64(1) {
+			res += highCard + " = " + strconv.Itoa(st) + " шт. (" + fmt.Sprintf("%2.3f", ver) + " %)<br>"
 		} else {
-			res += "СтаршКарта = " + strconv.Itoa(st) + " шт. (" + fmt.Sprintf("%2.1f", (float64(st)*100)/float64(n)) + " %)<br>"
+			res += highCard + " = " + strconv.Itoa(st) + " шт. (" + fmt.Sprintf("%2.1f", ver) + " %)<br>"
 		}
 	}
-	return res
+	return res, data
 }
 
 func (p *Poker) nameCombination(n byte) string {
 	nComb := ""
 	switch n {
 	case 1: //"Пара":
-		nComb = "Пара"
+		nComb = pair
 	case 2: // "Две пары":
-		nComb = "Две пары"
+		nComb = twoPair
 	case 3: //"Сет":
-		nComb = "Сет"
+		nComb = set
 	case 4: //"Стрит":
-		nComb = "Стрит"
+		nComb = straight
 	case 5: //"Флеш":
-		nComb = "Флеш"
+		nComb = flush
 	case 6: //"ФуллХаус":
-		nComb = "ФуллХаус"
+		nComb = fullHouse
 	case 7: //"Каре":
-		nComb = "Каре"
+		nComb = care
 	case 8: //"СтритФлеш":
-		nComb = "СтритФлеш"
+		nComb = straightFlush
 	case 9: //"РоялФлеш":
-		nComb = "РоялФлеш"
+		nComb = royalFlush
 	default:
-		nComb = "СтаршКарта"
+		nComb = highCard
 	}
 	return nComb
 }

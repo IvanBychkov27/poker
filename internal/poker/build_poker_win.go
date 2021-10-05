@@ -13,7 +13,7 @@ func (p *Poker) buildPokerWin(cardsHand, cardsTable, outCards []Card, nomberOppo
 	allOutCardsFromDeck = append(allOutCardsFromDeck, outCards...)
 
 	if len(cardsHand) != 2 {
-		message = p.Form + "Введите две Ваши карты!<br>"
+		message = p.PageTop + p.Form + "Введите две Ваши карты!<br>"
 		return
 	}
 	if message = p.cardsControl(cardsHand, cardsTable, outCards); message != "" {
@@ -38,14 +38,19 @@ func (p *Poker) buildPokerWin(cardsHand, cardsTable, outCards []Card, nomberOppo
 		victory = p.percentWinsDiffNumbersOpponents(victory, nomberOpponents)
 		return yourCombCards, nameComb, victory * 100, message
 	default:
-		message = p.Form + "Введите все карты выложенные на столе (3-5 карт)!<br>"
+		message = p.PageTop + p.Form + "Введите все карты выложенные на столе (3-5 карт)!<br>"
 		return
 	}
 
 	form := p.cardsDistributed(cardsHand, cardsTable, outCards)
-	message = p.printStatCombination(statAllMaxCombHand)
+	var data map[string]float64
+	message, data = p.printStatCombination(statAllMaxCombHand)
+
+	dataChart := p.setDataChart(data)
+	resultPageTop := strings.Replace(p.PageTop, "{chart_comb}", dataChart, 1)
+
 	message += p.recommendations(statAllMaxCombHand)
-	message = strings.Replace(form, "{head_victory}", message, 1)
+	message = resultPageTop + strings.Replace(form, "{head_victory}", message, 1)
 	return
 }
 
@@ -53,16 +58,16 @@ func (p *Poker) buildPokerWin(cardsHand, cardsTable, outCards []Card, nomberOppo
 func (p *Poker) cardsControl(cardsHand, cardsTable, outCards []Card) string {
 	for _, v := range cardsTable {
 		if cardsHand[0] == v || cardsHand[1] == v {
-			return p.Form + "Не корректный ввод карт стола! "
+			return p.PageTop + p.Form + "Не корректный ввод карт стола! "
 		}
 	}
 	for _, v := range outCards {
 		if cardsHand[0] == v || cardsHand[1] == v {
-			return p.Form + "Не корректный ввод вышедших карт! "
+			return p.PageTop + p.Form + "Не корректный ввод вышедших карт! "
 		}
 		for _, vt := range cardsTable {
 			if vt == v {
-				return p.Form + "Не корректный ввод вышедших карт! "
+				return p.PageTop + p.Form + "Не корректный ввод вышедших карт! "
 			}
 		}
 	}

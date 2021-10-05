@@ -30,7 +30,7 @@ func (app *Application) poker(wr http.ResponseWriter, req *http.Request) {
 		}
 
 		data := app.p.SetCheckbox(resultForm)
-		_, _ = fmt.Fprint(wr, pageTop, app.clearForm(data), pageBottom)
+		_, _ = fmt.Fprint(wr, app.clearForm(data), pageBottom)
 	} else {
 		data := app.p.SetCheckbox(form)
 		_, _ = fmt.Fprint(wr, pageTop, app.clearForm(data), pageBottom)

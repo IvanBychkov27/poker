@@ -25,6 +25,7 @@ func New(logger *zap.Logger, cfg *config.Config, p *poker.Poker) *Application {
 		cfg:    cfg,
 		p:      p,
 	}
+	app.p.PageTop = pageTop
 	app.p.Form = form
 
 	router := http.NewServeMux()

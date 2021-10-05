@@ -17,6 +17,7 @@ const (
 
 type Poker struct {
 	logger    *zap.Logger
+	PageTop   string
 	Form      string
 	cardHand  []Card
 	cardTable []Card

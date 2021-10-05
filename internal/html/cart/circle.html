@@ -1,0 +1,66 @@
+<!--http://htmlbook.ru/blog/grafiki-i-diagrammy-->
+
+<!doctype html>
+<html lang="i">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Круговая диаграмма</title>
+
+    <script src="https://www.google.com/jsapi"></script>
+    <script>
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Комбинация', 'Вероятность'],
+                ['СтаршаяКарта', 19.70],
+                ['Пара',     45.60],
+                ['Две пары', 22.70],
+                ['Сет', 4.40],
+                ['Стрит', 3.30],
+                ['Флеш', 2.00],
+                ['ФулХаус', 2.20],
+                ['Каре', 0.126],
+                ['СтритФлеш', 0.006],
+                ['РоялФлеш', 0.00444]
+            ]);
+            var options = {
+                title: 'Комбинации',
+                is3D: true,
+                pieResidueSliceLabel: 'Остальное'
+            };
+            var chart = new google.visualization.PieChart(document.getElementById('air'));
+            chart.draw(data, options);
+        }
+
+        google.setOnLoadCallback(drawChartHis);
+        function drawChartHis() {
+            var data = google.visualization.arrayToDataTable([
+                ['Год', 'Россия'],
+                ['1860', 1.3],
+                ['1885', 2000],
+                ['1901', 12170]
+            ]);
+            var options = {
+                title: 'Добыча нефти',
+                hAxis: {title: 'Год'},
+                vAxis: {title: 'Тыс. тонн'}
+            };
+            var chart = new google.visualization.ColumnChart(document.getElementById('oil'));
+            chart.draw(data, options);
+        }
+
+    </script>
+
+</head>
+<body>
+
+    <div id="air" style="width: 500px; height: 400px;"></div>
+
+    <div id="oil" style="width: 500px; height: 400px;"></div>
+
+</body>
+</html>

@@ -2,12 +2,11 @@ package application
 
 const (
 	pageBottom = `
-<p><H5><I>* при вводе только 2х своих карт время расчета составит около 2 сек.</I></H5>
+<p><H5><I>* при вводе только 2х своих карт время расчета составит около 3 сек.</I></H5>
 <form action="/" method="POST">
 	<button type="submit" name="resetButton">Очистить</button>
 <form>
 </body></html>`
-
 	pageTop = `
 <!DOCTYPE HTML>
 <html>
@@ -60,6 +59,23 @@ const (
             /* Цвет фона */
         }
     </style>
+
+    <script src="https://www.google.com/jsapi"></script>
+    <script>
+        google.load("visualization", "1", {packages:["corechart"]});
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable({chart_comb});
+            var options = {
+                title: 'Комбинации',
+                is3D: true,
+                pieResidueSliceLabel: 'Остальное'
+            };
+            var chart = new google.visualization.PieChart(document.getElementById('air'));
+            chart.draw(data, options);
+        }
+    </script>
+
 	</head>
 <body>
 `
@@ -216,7 +232,10 @@ const (
 
             </td>
             <td>{table_cards}</td>
-            <td style="text-align: left">{table_victory}</td>
+            <td style="text-align: left">
+				{table_victory}
+				<div id="air" style="width: 350px; height: 200px;"></div>
+			</td>
         </tr>
 
         <tr>
