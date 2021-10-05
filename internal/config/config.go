@@ -7,8 +7,8 @@ import (
 )
 
 type Config struct {
-	MainAddress    string `default:"" env:"MAIN_ADDRESS"`
-	ControlAddress string `default:"" env:"CONTROL_ADDRESS"`
+	MainAddress    string `default:"127.0.0.1:5000" env:"MAIN_ADDRESS"`
+	ControlAddress string `default:"127.0.0.1:5001" env:"CONTROL_ADDRESS"`
 }
 
 func New() *Config {
