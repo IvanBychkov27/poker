@@ -28,7 +28,6 @@ func NewPoker(logger *zap.Logger) *Poker {
 	p := &Poker{
 		logger: logger,
 	}
-
 	return p
 }
 

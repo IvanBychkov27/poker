@@ -3,6 +3,9 @@ package application
 const (
 	pageBottom = `
 <p><H5><I>* при вводе только 2х своих карт время расчета составит около 2 сек.</I></H5>
+<form action="/" method="POST">
+	<button type="submit" name="resetButton">Очистить</button>
+<form>
 </body></html>`
 
 	pageTop = `
@@ -219,7 +222,7 @@ const (
         <tr>
             <td>
                 <details>
-                    <summary>Введите <B>вышедшие</B> карты:</summary>
+                    <summary><B>Вышедшие карты: </B></summary>
                     <p>&emsp; &emsp; &nbsp; 2 &ensp; 3 &ensp; 4 &ensp; 5 &ensp; 6 &ensp; 7 &ensp; 8&ensp; 9&ensp; 10&ensp;
                         V&ensp;
                         D &ensp; K &ensp; T</p>
@@ -299,7 +302,7 @@ const (
     <input type="number" name="nPlayers" value="1"  min="1" max="15" size="1" step="1">
 </p>
 <br>
-<input type="submit" value="Расчитать вероятность">
+	<input type="submit" value="Рассчитать вероятность">
 <br>
 <br>==============================<br><br>
 </form>

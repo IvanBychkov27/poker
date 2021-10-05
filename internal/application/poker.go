@@ -9,8 +9,12 @@ import (
 func (app *Application) poker(wr http.ResponseWriter, req *http.Request) {
 	err := req.ParseForm()
 	if err != nil {
-		data := app.p.SetCheckbox(form)
-		_, _ = fmt.Fprint(wr, pageTop, app.clearForm(data), err, pageBottom)
+		_, _ = fmt.Fprint(wr, pageTop, form, err, pageBottom)
+		return
+	}
+
+	if req.Form["resetButton"] != nil {
+		_, _ = fmt.Fprint(wr, pageTop, app.clearForm(form), pageBottom)
 		return
 	}
 
