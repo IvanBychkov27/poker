@@ -7,7 +7,6 @@ import (
 	"go.uber.org/zap"
 	"strconv"
 	"strings"
-	"time"
 )
 
 const (
@@ -54,14 +53,14 @@ func (p *Poker) Poker(c *gin.Context, nPlayers string) (string, error) {
 		return "", fmt.Errorf("Введите две Ваши карты!")
 	}
 
-	timeStart := time.Now()
+	//timeStart := time.Now()
 	result := p.buildResult(cardHand, cardTable, cardOut, nPlay)
-	timeEnd := time.Now()
+	//timeEnd := time.Now()
 
-	dif := timeEnd.Sub(timeStart)
-	if dif.Milliseconds() > 100 {
-		p.logger.Debug("poker", zap.String("time", dif.String()))
-	}
+	//dif := timeEnd.Sub(timeStart)
+	//if dif.Milliseconds() > 100 {
+	//	p.logger.Debug("poker", zap.String("time", dif.String()))
+	//}
 	return result, nil
 }
 
