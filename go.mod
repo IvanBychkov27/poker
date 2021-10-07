@@ -3,7 +3,6 @@ module github.com/IvanBychkov27/poker
 go 1.17
 
 require (
-	github.com/cristalhq/aconfig v0.16.5
 	github.com/gin-gonic/gin v1.7.4
 	github.com/heroku/x v0.0.32
 	github.com/stretchr/testify v1.7.0
