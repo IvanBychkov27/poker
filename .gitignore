@@ -2,3 +2,6 @@
 .env*
 .debug
 go.sum
+.env
+.docker_build/
+bin/

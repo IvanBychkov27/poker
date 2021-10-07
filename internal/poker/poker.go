@@ -1,9 +1,10 @@
+// https://git.heroku.com/poker-iv.git
 package poker
 
 import (
 	"fmt"
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"net/http"
 	"strconv"
 	"strings"
 	"time"
@@ -27,18 +28,19 @@ type Poker struct {
 
 func NewPoker(logger *zap.Logger) *Poker {
 	p := &Poker{
-		logger: logger,
+		logger:  logger,
+		PageTop: pageTop,
+		Form:    form,
 	}
 	return p
 }
 
-func (p *Poker) Poker(req *http.Request) (string, error) {
-	cardHand := p.cardsGame(req, cardsHand)
-	cardTable := p.cardsGame(req, cardsTable)
-	cardOut := p.cardsGame(req, cardsOut)
+func (p *Poker) Poker(c *gin.Context, nPlayers string) (string, error) {
+	cardHand := p.cardsGame(c, cardsHand)
+	cardTable := p.cardsGame(c, cardsTable)
+	cardOut := p.cardsGame(c, cardsOut)
 
-	nPlayers := req.Form["nPlayers"]
-	nPlay, _ := strconv.Atoi(nPlayers[0])
+	nPlay, _ := strconv.Atoi(nPlayers)
 	if nPlay == 0 {
 		nPlay = 1
 	}

@@ -1,10 +1,10 @@
-package application
+package poker
 
 const (
 	pageBottom = `
 <p><H5><I>* при вводе только 2х своих карт время расчета составит около 3 сек.</I></H5>
-<form action="/" method="POST">
-	<button type="submit" name="resetButton">Очистить</button>
+<form action="/" method="GET">
+	<button type="submit" name="resetButton" value="reset">Очистить</button>
 <form>
 </body></html>`
 	pageTop = `
@@ -81,7 +81,7 @@ const (
 `
 
 	form = `
-<form action="/" method="POST">
+<form action="/" method="GET">
 <table>
         <caption><H2><B>Покерная вероятность победы</B></H2></caption>
         <thead>

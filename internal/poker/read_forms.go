@@ -1,12 +1,12 @@
 package poker
 
 import (
-	"net/http"
+	"github.com/gin-gonic/gin"
 	"strconv"
 )
 
 // --- чтение введенных карт из формы---
-func (p *Poker) cardsGame(req *http.Request, formName string) (cards []Card) {
+func (p *Poker) cardsGame(c *gin.Context, formName string) (cards []Card) {
 	nForm := formName
 	suit := "p"
 	for m := 1; m < 5; m++ {
@@ -20,9 +20,9 @@ func (p *Poker) cardsGame(req *http.Request, formName string) (cards []Card) {
 		}
 		for i := 2; i < 15; i++ {
 			nForm += strconv.Itoa(i) + suit
-			result := req.Form[nForm]
+			result := c.Request.URL.Query().Get(nForm)
 			nForm = formName
-			if len(result) == 1 {
+			if result == "on" {
 				cards = append(cards, Card{byte(i), byte(m)})
 			}
 		}
