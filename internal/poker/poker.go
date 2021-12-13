@@ -16,20 +16,22 @@ const (
 )
 
 type Poker struct {
-	logger    *zap.Logger
-	PageTop   string
-	Form      string
-	cardHand  []Card
-	cardTable []Card
-	cardOut   []Card
-	nPlay     int
+	logger        *zap.Logger
+	PageTop       string
+	Form          string
+	cardHand      []Card
+	cardTable     []Card
+	cardOut       []Card
+	nPlay         int
+	statHand2Card map[string][]int
 }
 
 func NewPoker(logger *zap.Logger) *Poker {
 	p := &Poker{
-		logger:  logger,
-		PageTop: pageTop,
-		Form:    form,
+		logger:        logger,
+		PageTop:       pageTop,
+		Form:          form,
+		statHand2Card: make(map[string][]int),
 	}
 	return p
 }
@@ -53,14 +55,8 @@ func (p *Poker) Poker(c *gin.Context, nPlayers string) (string, error) {
 		return "", fmt.Errorf("Введите две Ваши карты!")
 	}
 
-	//timeStart := time.Now()
 	result := p.buildResult(cardHand, cardTable, cardOut, nPlay)
-	//timeEnd := time.Now()
 
-	//dif := timeEnd.Sub(timeStart)
-	//if dif.Milliseconds() > 100 {
-	//	p.logger.Debug("poker", zap.String("time", dif.String()))
-	//}
 	return result, nil
 }
 

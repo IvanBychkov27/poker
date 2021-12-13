@@ -1,5 +1,7 @@
 package poker
 
+import "strconv"
+
 //--- статистика максимальных комбинаций из 7 карт: 1 карт из оставшейся колоды и + 6 карт на руках ---
 func (p *Poker) statAllMaxCombHand_6_cards(deckCards, handCards []Card) []int {
 	if len(handCards) != 6 {
@@ -71,6 +73,12 @@ func (p *Poker) statAllMaxCombHand_2_cards(deckCards, handCards []Card) []int {
 		return nil
 	}
 
+	key := strconv.Itoa(int(handCards[0].value)) + strconv.Itoa(int(handCards[0].suil)) + strconv.Itoa(int(handCards[1].value)) + strconv.Itoa(int(handCards[1].suil))
+	res, ok := p.statHand2Card[key]
+	if ok {
+		return res
+	}
+
 	ch := make(chan []int)
 	statResult := make([]int, 11, 11)
 	stat := make([]int, 11, 11)
@@ -107,6 +115,8 @@ func (p *Poker) statAllMaxCombHand_2_cards(deckCards, handCards []Card) []int {
 		stat = <-ch
 		statResult = p.sumStat(statResult, stat)
 	}
+
+	p.statHand2Card[key] = statResult
 
 	return statResult
 }
