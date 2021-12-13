@@ -74,7 +74,9 @@ func (p *Poker) statAllMaxCombHand_2_cards(deckCards, handCards []Card) []int {
 	}
 
 	key := strconv.Itoa(int(handCards[0].value)) + strconv.Itoa(int(handCards[0].suil)) + strconv.Itoa(int(handCards[1].value)) + strconv.Itoa(int(handCards[1].suil))
+	p.statHandMx.RLock()
 	res, ok := p.statHand2Card[key]
+	p.statHandMx.RUnlock()
 	if ok {
 		return res
 	}
@@ -116,7 +118,9 @@ func (p *Poker) statAllMaxCombHand_2_cards(deckCards, handCards []Card) []int {
 		statResult = p.sumStat(statResult, stat)
 	}
 
+	p.statHandMx.Lock()
 	p.statHand2Card[key] = statResult
+	p.statHandMx.Unlock()
 
 	return statResult
 }
@@ -257,4 +261,24 @@ func (p *Poker) statCombination(allComb_5_Cards [][]Card) []int {
 	}
 	var resultComb = []int{st, pr, dp, c, s, f, fh, k, sf, rf, n}
 	return resultComb
+}
+
+// --- заполнение массива всеми комбинациями из 2-х карт из колоды карт ---
+func (p *Poker) allCombinations_2_Cards(deckCards []Card) ([][]Card, int) {
+	len_deckCards := len(deckCards)
+	lenAllComb := p.combinatorika(2, uint64(len_deckCards))
+	allComb := make([][]Card, lenAllComb)
+	for i := range allComb {
+		allComb[i] = make([]Card, 2)
+	}
+	comb := 0
+	for i := 0; i < len_deckCards-1; i++ {
+		for j := 1 + i; j < len_deckCards; j++ {
+			allComb[comb][0] = deckCards[i]
+			allComb[comb][1] = deckCards[j]
+			comb++
+		}
+	}
+
+	return allComb, comb
 }

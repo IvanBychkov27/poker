@@ -7,6 +7,8 @@ import (
 	"go.uber.org/zap"
 	"strconv"
 	"strings"
+	"sync"
+	"time"
 )
 
 const (
@@ -23,6 +25,7 @@ type Poker struct {
 	cardTable     []Card
 	cardOut       []Card
 	nPlay         int
+	statHandMx    sync.RWMutex
 	statHand2Card map[string][]int
 }
 
@@ -33,6 +36,9 @@ func NewPoker(logger *zap.Logger) *Poker {
 		Form:          form,
 		statHand2Card: make(map[string][]int),
 	}
+
+	go p.setHand2Card()
+
 	return p
 }
 
@@ -95,4 +101,28 @@ func (p *Poker) setCheck(form, typeCheckbox string, cards []Card) string {
 		form = form[:idx] + " checked" + form[idx:]
 	}
 	return form
+}
+
+// заполняем в кеш статистику всех комбинаций из 2-х карт на руках
+func (p *Poker) setHand2Card() {
+	deckCards := p.deckCardsFull()
+	combs, count := p.allCombinations_2_Cards(deckCards)
+	p.logger.Debug("set hand 2 card", zap.Int("count", count))
+
+	wg := &sync.WaitGroup{}
+
+	for i, handCards := range combs {
+		if i%3 == 0 {
+			time.Sleep(time.Second * 30)
+		}
+		wg.Add(1)
+		go func(wg *sync.WaitGroup, cards []Card) {
+			defer wg.Done()
+			_ = p.statAllMaxCombHand_2_cards(p.deckCards_NoFull(cards), cards)
+		}(wg, handCards)
+		p.logger.Debug("set hand 2 card", zap.Int("init", i+1))
+	}
+
+	wg.Wait()
+	p.logger.Debug("set hand 2 card: init all")
 }

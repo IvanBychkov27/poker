@@ -1,6 +1,7 @@
 package poker
 
 import (
+	"go.uber.org/zap"
 	"strings"
 )
 
@@ -26,6 +27,7 @@ func (p *Poker) buildPokerWin(cardsHand, cardsTable, outCards []Card, nomberOppo
 	switch len(cardsTable) {
 	case 0:
 		statAllMaxCombHand = p.statAllMaxCombHand_2_cards(dCardNoFull, cardsHandAndTable)
+		p.logger.Debug("count map ", zap.Int("count", len(p.statHand2Card)))
 	case 3:
 		statAllMaxCombHand = p.statAllMaxCombHand_5_cards(dCardNoFull, cardsHandAndTable)
 	case 4:
