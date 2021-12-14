@@ -13,6 +13,7 @@ const (
 <!DOCTYPE HTML>
 <html>
 	<head>
+		<link rel="icon" href="http://poker-iv.herokuapp.com/favicon.ico" type="image/x-icon">
 		<meta charset="utf-8">
 		<title>Poker combinations</title>
 		<style>
