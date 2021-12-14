@@ -67,13 +67,19 @@ func (p *Poker) statAllMaxCombHand_5_cards(deckCards, handCards []Card) []int {
 }
 
 //--- статистика максимальных комбинаций из 7 карт: 5 карт из оставшейся колоды и + 2 карты на руках ---
-func (p *Poker) statAllMaxCombHand_2_cards(deckCards, handCards []Card) []int {
+func (p *Poker) statAllMaxCombHand_2_cards(deckCards, handCards, outCards []Card) []int {
 	if len(handCards) != 2 {
 		p.logger.Debug("invalid combination handCards")
 		return nil
 	}
 
-	key := strconv.Itoa(int(handCards[0].value)) + strconv.Itoa(int(handCards[0].suil)) + strconv.Itoa(int(handCards[1].value)) + strconv.Itoa(int(handCards[1].suil))
+	key := ""
+	dataKey := handCards
+	dataKey = append(dataKey, outCards...)
+	for _, d := range dataKey {
+		key += strconv.Itoa(int(d.value)) + strconv.Itoa(int(d.suil))
+	}
+
 	p.statHandMx.RLock()
 	res, ok := p.statHand2Card[key]
 	p.statHandMx.RUnlock()

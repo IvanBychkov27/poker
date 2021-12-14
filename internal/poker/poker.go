@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"io"
 	"os"
 	"strconv"
 	"strings"
@@ -29,6 +30,7 @@ type Poker struct {
 	nPlay         int
 	statHandMx    sync.RWMutex
 	statHand2Card map[string][]int
+	countVisits   int
 }
 
 func NewPoker(logger *zap.Logger) *Poker {
@@ -37,9 +39,11 @@ func NewPoker(logger *zap.Logger) *Poker {
 		PageTop:       pageTop,
 		Form:          form,
 		statHand2Card: make(map[string][]int),
+		countVisits:   getCountVisits(),
 	}
 
 	p.getStatDataHand2Card()
+
 	//go p.setHand2Card()
 
 	return p
@@ -130,6 +134,32 @@ func (p *Poker) getStatDataHand2Card() {
 	p.logger.Debug("get stat data hand 2 card", zap.Int("count", len(p.statHand2Card)))
 }
 
+func getCountVisits() int {
+	df, err := os.Open("internal/data/count_visits.txt")
+	if err != nil {
+		fmt.Println("error open file:", err.Error())
+		return 0
+	}
+	defer df.Close()
+
+	data := []byte{}
+	dataFile := make([]byte, 1)
+	for {
+		_, err = df.Read(dataFile)
+		if err == io.EOF {
+			break
+		}
+		data = append(data, dataFile...)
+	}
+
+	countVisits, errConv := strconv.Atoi(string(data))
+	if errConv != nil {
+		fmt.Println("error convert data count visits:", errConv.Error())
+		return 0
+	}
+	return countVisits
+}
+
 // заполняем в кеш статистику всех комбинаций из 2-х карт на руках
 func (p *Poker) setHand2Card() {
 	deckCards := p.deckCardsFull()
@@ -145,7 +175,7 @@ func (p *Poker) setHand2Card() {
 		wg.Add(1)
 		go func(wg *sync.WaitGroup, cards []Card, id int) {
 			defer wg.Done()
-			_ = p.statAllMaxCombHand_2_cards(p.deckCards_NoFull(cards), cards)
+			_ = p.statAllMaxCombHand_2_cards(p.deckCards_NoFull(cards), cards, nil)
 			p.logger.Debug("go set hand 2 card", zap.Int("id", id))
 		}(wg, handCards, i+1)
 	}

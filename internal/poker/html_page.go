@@ -7,6 +7,7 @@ const (
 <form>
 <br>
 <p><H5><I>IvanBychkov@mail.ru</I></H5>
+<p><H6><I><span style="color: lightgray"> {count_visits} </span></I></H6>
 </body></html>`
 	pageTop = `
 <!DOCTYPE HTML>
