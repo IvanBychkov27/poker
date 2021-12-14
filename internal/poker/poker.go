@@ -2,9 +2,11 @@
 package poker
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"os"
 	"strconv"
 	"strings"
 	"sync"
@@ -29,7 +31,7 @@ type Poker struct {
 	statHand2Card map[string][]int
 }
 
-func NewPoker(logger *zap.Logger) *Poker {
+func NewPoker(logger *zap.Logger, dataStat []byte) *Poker {
 	p := &Poker{
 		logger:        logger,
 		PageTop:       pageTop,
@@ -37,7 +39,8 @@ func NewPoker(logger *zap.Logger) *Poker {
 		statHand2Card: make(map[string][]int),
 	}
 
-	go p.setHand2Card()
+	p.getStatDataHand2Card(dataStat)
+	//go p.setHand2Card()
 
 	return p
 }
@@ -103,6 +106,14 @@ func (p *Poker) setCheck(form, typeCheckbox string, cards []Card) string {
 	return form
 }
 
+func (p *Poker) getStatDataHand2Card(data []byte) {
+	err := json.Unmarshal(data, &p.statHand2Card)
+	if err != nil {
+		p.logger.Error("error json unmarshal:", zap.Error(err))
+	}
+	p.logger.Debug("get stat data hand 2 card", zap.Int("count", len(p.statHand2Card)))
+}
+
 // заполняем в кеш статистику всех комбинаций из 2-х карт на руках
 func (p *Poker) setHand2Card() {
 	deckCards := p.deckCardsFull()
@@ -113,16 +124,41 @@ func (p *Poker) setHand2Card() {
 
 	for i, handCards := range combs {
 		if i%3 == 0 {
-			time.Sleep(time.Second * 30)
+			time.Sleep(time.Second * 10)
 		}
 		wg.Add(1)
-		go func(wg *sync.WaitGroup, cards []Card) {
+		go func(wg *sync.WaitGroup, cards []Card, id int) {
 			defer wg.Done()
 			_ = p.statAllMaxCombHand_2_cards(p.deckCards_NoFull(cards), cards)
-		}(wg, handCards)
-		p.logger.Debug("set hand 2 card", zap.Int("init", i+1))
+			p.logger.Debug("go set hand 2 card", zap.Int("id", id))
+		}(wg, handCards, i+1)
 	}
 
 	wg.Wait()
 	p.logger.Debug("set hand 2 card: init all")
+
+	data, err := json.Marshal(p.statHand2Card)
+	if err != nil {
+		p.logger.Error("error json marshal:", zap.Error(err))
+		return
+	}
+	fileName := "internal/data/stat_all_comb_hand_2_cards.txt"
+	err = saveFile(fileName, data)
+	if err != nil {
+		p.logger.Error("error save file:", zap.Error(err))
+	}
+}
+
+func saveFile(fileName string, data []byte) error {
+	df, errCreateFile := os.Create(fileName)
+	if errCreateFile != nil {
+		return errCreateFile
+	}
+	defer df.Close()
+
+	_, errWrite := df.Write(data)
+	if errWrite != nil {
+		return errWrite
+	}
+	return nil
 }

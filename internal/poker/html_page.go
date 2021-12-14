@@ -2,10 +2,11 @@ package poker
 
 const (
 	pageBottom = `
-<p><H5><I>* при вводе только 2х своих карт время расчета составит около 3 сек.</I></H5>
 <form action="/" method="GET">
 	<button type="submit" name="resetButton" value="reset">Очистить</button>
 <form>
+<br>
+<p><H5><I>IvanBychkov@mail.ru</I></H5>
 </body></html>`
 	pageTop = `
 <!DOCTYPE HTML>
