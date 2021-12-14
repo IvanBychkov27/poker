@@ -31,7 +31,7 @@ type Poker struct {
 	statHand2Card map[string][]int
 }
 
-func NewPoker(logger *zap.Logger, dataStat []byte) *Poker {
+func NewPoker(logger *zap.Logger) *Poker {
 	p := &Poker{
 		logger:        logger,
 		PageTop:       pageTop,
@@ -39,7 +39,7 @@ func NewPoker(logger *zap.Logger, dataStat []byte) *Poker {
 		statHand2Card: make(map[string][]int),
 	}
 
-	p.getStatDataHand2Card(dataStat)
+	p.getStatDataHand2Card()
 	//go p.setHand2Card()
 
 	return p
@@ -106,8 +106,16 @@ func (p *Poker) setCheck(form, typeCheckbox string, cards []Card) string {
 	return form
 }
 
-func (p *Poker) getStatDataHand2Card(data []byte) {
-	err := json.Unmarshal(data, &p.statHand2Card)
+func (p *Poker) getStatDataHand2Card() {
+	var err error
+	var data []byte
+
+	data, err = os.ReadFile("internal/data/stat_all_comb_hand_2_cards.txt")
+	if err != nil {
+		p.logger.Error("error read file:", zap.Error(err))
+	}
+
+	err = json.Unmarshal(data, &p.statHand2Card)
 	if err != nil {
 		p.logger.Error("error json unmarshal:", zap.Error(err))
 	}

@@ -1,7 +1,6 @@
 package main
 
 import (
-	_ "embed"
 	"fmt"
 	"github.com/IvanBychkov27/poker/internal/poker"
 	"github.com/gin-gonic/gin"
@@ -10,9 +9,6 @@ import (
 	"os"
 )
 
-//go:embed stat_all_comb_hand_2_cards.txt
-var statDataHand2Cards []byte
-
 func main() {
 	logger, err := zap.NewDevelopment()
 	if err != nil {
@@ -20,7 +16,7 @@ func main() {
 		return
 	}
 
-	p := poker.NewPoker(logger, statDataHand2Cards)
+	p := poker.NewPoker(logger)
 
 	port := os.Getenv("PORT")
 	if port == "" {
