@@ -107,17 +107,25 @@ func (p *Poker) setCheck(form, typeCheckbox string, cards []Card) string {
 }
 
 func (p *Poker) getStatDataHand2Card() {
-	var err error
-	var data []byte
+	fileName := "internal/data/stat_all_comb_hand_2_cards.txt"
+	df, err := os.Open(fileName)
+	if err != nil {
+		p.logger.Error("error open file:", zap.Error(err))
+		return
+	}
+	defer df.Close()
 
-	data, err = os.ReadFile("internal/data/stat_all_comb_hand_2_cards.txt")
+	data := make([]byte, 99577)
+	_, err = df.Read(data)
 	if err != nil {
 		p.logger.Error("error read file:", zap.Error(err))
+		return
 	}
 
 	err = json.Unmarshal(data, &p.statHand2Card)
 	if err != nil {
 		p.logger.Error("error json unmarshal:", zap.Error(err))
+		return
 	}
 	p.logger.Debug("get stat data hand 2 card", zap.Int("count", len(p.statHand2Card)))
 }
